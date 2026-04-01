@@ -10,8 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static utils.DBConnection.getConnection;
-
 public class LoyaltyPointsDAOImpl extends BaseDAO implements ILoyaltyPointsDAO {
     @Override
     public LoyaltyPoints findByUserId(int userId) {

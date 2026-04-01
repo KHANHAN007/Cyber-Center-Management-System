@@ -60,7 +60,7 @@ public class ConsoleUtils {
         String top = "╔" + border + "╗";
         String bottom = "╚" + border + "╝";
 
-        // Remove color codes from text for length calculation
+
         String cleanOption1 = option1.replaceAll("\u001b\\[[;\\d]*m|\033\\[[;\\d]*m", "");
         String cleanOption2 = option2.replaceAll("\u001b\\[[;\\d]*m|\033\\[[;\\d]*m", "");
 
@@ -89,7 +89,7 @@ public class ConsoleUtils {
     private static String determineColor(String text) {
         String cleanText = text.replaceAll("\u001b\\[[;\\d]*m|\033\\[[;\\d]*m", "").toUpperCase();
 
-        // Check if text already has color codes embedded
+
         if (text.contains("\033[") || text.contains("\u001b[")) {
             if (text.contains(GREEN)) {
                 return GREEN;
@@ -236,10 +236,10 @@ public class ConsoleUtils {
     }
 
     public static int calculateTableWidth(int[] columnWidths) {
-        int width = 1; // Leading border ║
+        int width = 1;
         for (int i = 0; i < columnWidths.length; i++) {
-            width += columnWidths[i] + 2; // Column content + 1 space on each side
-            width += 1; // Border separator ║
+            width += columnWidths[i] + 2;
+            width += 1;
         }
         return width;
     }
@@ -303,7 +303,7 @@ public class ConsoleUtils {
 
         String tablePadding = getTablePadding(columnWidths, consoleWidth);
         for (int line = 0; line < maxLines; line++) {
-            StringBuilder row = new StringBuilder("|");
+            StringBuilder row = new StringBuilder("║");
             for (int i = 0; i < columnWidths.length; i++) {
                 String cellText = (line < wrappedData[i].length) ? wrappedData[i][line] : "";
                 int width = columnWidths[i];
@@ -316,7 +316,7 @@ public class ConsoleUtils {
                     row.append("|");
                 }
             }
-            row.append("|");
+            row.append("║");
             System.out.println(tablePadding + row);
         }
     }
@@ -380,22 +380,10 @@ public class ConsoleUtils {
         System.out.println(tablePadding + bottom);
     }
 
-    /**
-     * Format price in Vietnamese Dong (VND)
-     * 
-     * @param amount price amount
-     * @return formatted price string with ₫ symbol
-     */
     public static String formatVND(double amount) {
         return String.format("₫%.0f", amount);
     }
 
-    /**
-     * Format price in Vietnamese Dong (VND) - overload for Number types
-     * 
-     * @param amount price amount (Double, BigDecimal, etc.)
-     * @return formatted price string with ₫ symbol
-     */
     public static String formatVND(Number amount) {
         if (amount == null) {
             return "N/A";
@@ -403,13 +391,6 @@ public class ConsoleUtils {
         return String.format("₫%.0f", amount.doubleValue());
     }
 
-    /**
-     * Format price range in Vietnamese Dong (VND)
-     * 
-     * @param minPrice minimum price
-     * @param maxPrice maximum price
-     * @return formatted price range string
-     */
     public static String formatPriceRange(double minPrice, double maxPrice) {
         return String.format("₫%.0f-₫%.0f", minPrice, maxPrice);
     }

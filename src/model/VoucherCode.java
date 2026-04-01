@@ -12,14 +12,14 @@ public class VoucherCode {
     private int promotionId;
     private String promotionName;
 
-    private DiscountType discountType; // PERCENT or FIXED
-    private BigDecimal discountValue; // Percentage or fixed amount
-    private BigDecimal minOrderValue; // Minimum order value to use voucher
+    private DiscountType discountType;
+    private BigDecimal discountValue;
+    private BigDecimal minOrderValue;
 
-    private int maxUses; // 0 = unlimited, >0 = limited
-    private int usedCount; // Current used count
+    private int maxUses;
+    private int usedCount;
 
-    private VoucherStatus status; // ACTIVE, INACTIVE, EXPIRED
+    private VoucherStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
 
@@ -152,7 +152,7 @@ public class VoucherCode {
 
     public int getRemainingUses() {
         if (isUnlimited())
-            return -1; // -1 means unlimited
+            return -1;
         return maxUses - usedCount;
     }
 

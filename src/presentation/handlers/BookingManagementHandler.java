@@ -4,6 +4,7 @@ import dao.interfaces.IBookingDAO;
 import model.Booking;
 import presentation.ConsoleUtils;
 import service.interfaces.IBookingService;
+import utils.InputValidator;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,39 +13,28 @@ import static presentation.ConsoleUtils.centerText;
 
 public class BookingManagementHandler {
     private Scanner sc;
-    private IBookingService bookingService;
     private IBookingDAO bookingDAO;
 
     public BookingManagementHandler(Scanner sc, IBookingService bookingService, IBookingDAO bookingDAO) {
         this.sc = sc;
-        this.bookingService = bookingService;
         this.bookingDAO = bookingDAO;
     }
 
     public void handleBookingManagement() {
         while (true) {
             ConsoleUtils.clearScreen();
-            String[] logo = {
-                    "▗▄▄▖  ▗▄▖  ▗▄▖ ▗▖ ▗▖▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖    ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                    "▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌▗▞▘  █  ▐▛▚▖▐▌▐▌       ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                    "▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▚▖   █  ▐▌ ▝▜▌▐▌▝▜▌    ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                    "▐▙▄▞▘▝▚▄▞▘▝▚▄▞▘▐▌ ▐▌▗▄█▄▖▐▌  ▐▌▝▚▄▞▘    ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                    ""
-            };
-
-            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 88);
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "BOOKING MANAGEMENT" + ConsoleUtils.RESET,
+                    134);
 
             String[] options = {
-                    "1. View pending bookings",
-                    "2. Confirm booking",
-                    "3. Cancel booking",
-                    "4. View booking details",
-                    "5. View all bookings",
-                    "6. Back"
+                    "1. Confirm booking",
+                    "2. Cancel booking",
+                    "3. View booking details",
+                    "4. View all bookings",
+                    "5. Back"
             };
 
             String[] colors = {
-                    ConsoleUtils.GREEN,
                     ConsoleUtils.GREEN,
                     ConsoleUtils.ORANGE,
                     ConsoleUtils.GREEN,
@@ -57,45 +47,36 @@ public class BookingManagementHandler {
 
             System.out.print(
                     centerText(
-                            ConsoleUtils.YELLOW + "Choose an option (1-6): " + ConsoleUtils.RESET,
+                            ConsoleUtils.YELLOW + "Choose an option (1-5): " + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH));
 
             try {
-                int choice = Integer.parseInt(sc.nextLine());
+                int choice = InputValidator.getIntInput(sc, "");
                 switch (choice) {
                     case 1:
-                        viewPendingBookings();
-                        break;
-                    case 2:
                         confirmBooking();
                         break;
-                    case 3:
+                    case 2:
                         cancelBooking();
                         break;
-                    case 4:
+                    case 3:
                         viewBookingDetail();
                         break;
-                    case 5:
+                    case 4:
                         viewAllBookings();
                         break;
-                    case 6:
+                    case 5:
                         return;
                     default:
                         ConsoleUtils.printCenter(
                                 ConsoleUtils.RED + "Invalid choice!" + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH);
-                        System.out.println(centerText(
-                                ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
-                                ConsoleUtils.DEFAULT_WIDTH));
-                        sc.nextLine();
+                        pauseMenu();
                 }
             } catch (NumberFormatException e) {
                 ConsoleUtils.printCenter(ConsoleUtils.RED + "Invalid input!" + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH);
-                System.out.println(centerText(
-                        ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
-                        ConsoleUtils.DEFAULT_WIDTH));
-                sc.nextLine();
+                pauseMenu();
             }
         }
     }
@@ -104,26 +85,15 @@ public class BookingManagementHandler {
         try {
             ConsoleUtils.clearScreen();
             System.out.println();
-            String[] logo = {
-                    "▗▄▄▖  ▗▄▖  ▗▄▖ ▗▖ ▗▖▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖    ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                    "▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌▗▞▘  █  ▐▛▚▖▐▌▐▌       ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                    "▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▚▖   █  ▐▌ ▝▜▌▐▌▝▜▌    ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                    "▐▙▄▞▘▝▚▄▞▘▝▚▄▞▘▐▌ ▐▌▗▄█▄▖▐▌  ▐▌▝▚▄▞▘    ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                    ""
-            };
-
-            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 88);
-            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ＰＥＮＤＩＮＧ  ＢＯＯＫＩＮＧＳ" + ConsoleUtils.RESET, 135);
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "PENDING BOOKINGS" + ConsoleUtils.RESET,
+                    135);
 
             List<Booking> bookings = bookingDAO.findPendingBookings();
 
             if (bookings == null || bookings.isEmpty()) {
-                ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "No bookings found!" + ConsoleUtils.RESET,
+                ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "No pending bookings found!" + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH);
-                System.out.print(centerText(
-                        ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
-                        ConsoleUtils.DEFAULT_WIDTH));
-                sc.nextLine();
+                pauseMenu();
                 return;
             }
 
@@ -156,14 +126,12 @@ public class BookingManagementHandler {
 
             ConsoleUtils.printTableFooter(columnWidths, 145);
             System.out.println();
-            System.out.print(centerText(
-                    ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
-                    ConsoleUtils.DEFAULT_WIDTH));
-            sc.nextLine();
+            pauseMenu();
 
         } catch (Exception e) {
             ConsoleUtils.printCenter(ConsoleUtils.RED + "Error: " + e.getMessage() + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
+            pauseMenu();
         }
     }
 
@@ -171,59 +139,115 @@ public class BookingManagementHandler {
         try {
             ConsoleUtils.clearScreen();
             System.out.println();
-            String[] logo = {
-                    "▗▄▄▖  ▗▄▖  ▗▄▖ ▗▖ ▗▖▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖    ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                    "▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌▗▞▘  █  ▐▛▚▖▐▌▐▌       ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                    "▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▚▖   █  ▐▌ ▝▜▌▐▌▝▜▌    ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                    "▐▙▄▞▘▝▚▄▞▘▝▚▄▞▘▐▌ ▐▌▗▄█▄▖▐▌  ▐▌▝▚▄▞▘    ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                    ""
-            };
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "CONFIRM BOOKING" + ConsoleUtils.RESET,
+                    135);
 
-            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 88);
-            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ＣＡＮＣＥＬ  ＢＯＯＫＩＮＧ" + ConsoleUtils.RESET, 145);
+            List<Booking> bookings = bookingDAO.findPendingBookings();
 
-            System.out.print(centerText(
-                    ConsoleUtils.YELLOW + "Enter booking ID to confirm: " + ConsoleUtils.RESET,
-                    ConsoleUtils.DEFAULT_WIDTH));
-
-            try {
-                int bookingId = Integer.parseInt(sc.nextLine());
-                Booking booking = bookingDAO.findById(bookingId);
-
-                if (booking == null) {
-                    ConsoleUtils.printCenter(ConsoleUtils.RED + "Booking not found!" + ConsoleUtils.RESET,
-                            ConsoleUtils.DEFAULT_WIDTH);
-                } else if (booking.getStatus().toString().equals("PENDING")) {
-                    booking.setStatus(enums.BookingStatus.CONFIRMED);
-                    bookingDAO.update(booking);
-                    System.out.println();
-                    ConsoleUtils.printCenter(
-                            ConsoleUtils.GREEN + "Booking confirmed successfully!" + ConsoleUtils.RESET,
-                            ConsoleUtils.DEFAULT_WIDTH);
-                    ConsoleUtils.printCenter(
-                            ConsoleUtils.GREEN + "Booking ID: " + booking.getBookingId() + " | Status: CONFIRMED"
-                                    + ConsoleUtils.RESET,
-                            ConsoleUtils.DEFAULT_WIDTH);
-                } else {
-                    System.out.println();
-                    ConsoleUtils.printCenter(
-                            ConsoleUtils.YELLOW + "Booking is already " + booking.getStatus().getDescription()
-                                    + ConsoleUtils.RESET,
-                            ConsoleUtils.DEFAULT_WIDTH);
-                }
-            } catch (NumberFormatException e) {
-                ConsoleUtils.printCenter(ConsoleUtils.RED + "Invalid booking ID!" + ConsoleUtils.RESET,
+            if (bookings == null || bookings.isEmpty()) {
+                System.out.println();
+                ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "No pending bookings found!" + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH);
+                pauseMenu();
+                return;
             }
 
+            System.out.println();
+            String[] headers = { "ID", "Code", "User ID", "Slot ID", "Status", "Created At" };
+            int[] columnWidths = { 5, 12, 8, 8, 20, 15 };
+
+            ConsoleUtils.printTableHeader(headers, columnWidths, 145);
+
+            for (int i = 0; i < bookings.size(); i++) {
+                Booking booking = bookings.get(i);
+                String status = booking.getStatus() != null ? booking.getStatus().getDescription() : "N/A";
+                String createdAt = booking.getCreatedAt() != null ? booking.getCreatedAt().toString().substring(0, 10)
+                        : "N/A";
+
+                String[] rowData = {
+                        String.valueOf(booking.getBookingId()),
+                        booking.getBookingCode() != null ? booking.getBookingCode() : "N/A",
+                        String.valueOf(booking.getUserId()),
+                        String.valueOf(booking.getSlotId()),
+                        status,
+                        createdAt
+                };
+
+                ConsoleUtils.printTableRow(rowData, columnWidths, 145);
+
+                if (i < bookings.size() - 1) {
+                    ConsoleUtils.printTableRowSeparator(columnWidths, 145);
+                }
+            }
+
+            ConsoleUtils.printTableFooter(columnWidths, 145);
+            System.out.println();
+
+            String[] options = {
+                    "1. Confirm booking",
+                    "2. Back"
+            };
+
+            String[] colors = {
+                    ConsoleUtils.GREEN,
+                    ConsoleUtils.RED
+            };
+
+            ConsoleUtils.printMenuOptions(options, ConsoleUtils.DEFAULT_WIDTH, colors);
+
             System.out.print(centerText(
-                    ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
+                    ConsoleUtils.YELLOW + "Choose an option (1-2): " + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH));
-            sc.nextLine();
+
+            int choice = InputValidator.getIntInput(sc, "");
+
+            if (choice == 1) {
+                System.out.print(centerText(
+                        ConsoleUtils.YELLOW + "Enter booking ID to confirm: " + ConsoleUtils.RESET,
+                        ConsoleUtils.DEFAULT_WIDTH));
+
+                try {
+                    int bookingId = InputValidator.getIntInput(sc, "");
+                    Booking booking = bookingDAO.findById(bookingId);
+
+                    if (booking == null) {
+                        System.out.println();
+                        ConsoleUtils.printCenter(ConsoleUtils.RED + "Booking not found!" + ConsoleUtils.RESET,
+                                ConsoleUtils.DEFAULT_WIDTH);
+                    } else if (booking.getStatus().toString().equals("PENDING")) {
+                        booking.setStatus(enums.BookingStatus.CONFIRMED);
+                        bookingDAO.update(booking);
+                        System.out.println();
+                        ConsoleUtils.printCenter(
+                                ConsoleUtils.GREEN + "Booking confirmed successfully!" + ConsoleUtils.RESET,
+                                ConsoleUtils.DEFAULT_WIDTH);
+                        ConsoleUtils.printCenter(
+                                ConsoleUtils.GREEN + "Booking ID: " + booking.getBookingId() + " | Status: CONFIRMED"
+                                        + ConsoleUtils.RESET,
+                                ConsoleUtils.DEFAULT_WIDTH);
+                    } else {
+                        System.out.println();
+                        ConsoleUtils.printCenter(
+                                ConsoleUtils.YELLOW + "Booking is already " + booking.getStatus().getDescription()
+                                        + ConsoleUtils.RESET,
+                                ConsoleUtils.DEFAULT_WIDTH);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println();
+                    ConsoleUtils.printCenter(ConsoleUtils.RED + "Invalid booking ID!" + ConsoleUtils.RESET,
+                            ConsoleUtils.DEFAULT_WIDTH);
+                }
+
+                System.out.print(centerText(
+                        ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
+                        ConsoleUtils.DEFAULT_WIDTH));
+                sc.nextLine();
+            }
 
         } catch (Exception e) {
             ConsoleUtils.printCenter(ConsoleUtils.RED + "Error: " + e.getMessage() + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
+            pauseMenu();
         }
     }
 
@@ -231,23 +255,14 @@ public class BookingManagementHandler {
         try {
             ConsoleUtils.clearScreen();
             System.out.println();
-            String[] logo = {
-                    "▗▄▄▖  ▗▄▖  ▗▄▖ ▗▖ ▗▖▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖    ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                    "▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌▗▞▘  █  ▐▛▚▖▐▌▐▌       ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                    "▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▚▖   █  ▐▌ ▝▜▌▐▌▝▜▌    ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                    "▐▙▄▞▘▝▚▄▞▘▝▚▄▞▘▐▌ ▐▌▗▄█▄▖▐▌  ▐▌▝▚▄▞▘    ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                    ""
-            };
-
-            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 88);
-            ConsoleUtils.printCenter(ConsoleUtils.ORANGE + "CANCEL BOOKING" + ConsoleUtils.RESET, 190);
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "CANCEL BOOKING" + ConsoleUtils.RESET, 145);
 
             System.out.print(centerText(
                     ConsoleUtils.YELLOW + "Enter booking ID to cancel: " + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH));
 
             try {
-                int bookingId = Integer.parseInt(sc.nextLine());
+                int bookingId = InputValidator.getIntInput(sc, "");
                 Booking booking = bookingDAO.findById(bookingId);
 
                 if (booking == null) {
@@ -256,10 +271,10 @@ public class BookingManagementHandler {
                 } else if (!booking.getStatus().toString().equals("PENDING")) {
                     System.out.println();
                     ConsoleUtils.printCenter(
-                            ConsoleUtils.YELLOW + "⚠️ Only PENDING bookings can be cancelled!" + ConsoleUtils.RESET,
+                            ConsoleUtils.ORANGE + "Only PENDING bookings can be cancelled!" + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH);
                     ConsoleUtils.printCenter(
-                            ConsoleUtils.YELLOW + "Current status: " + booking.getStatus().getDescription()
+                            ConsoleUtils.ORANGE + "Current status: " + booking.getStatus().getDescription()
                                     + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH);
                 } else {
@@ -287,6 +302,7 @@ public class BookingManagementHandler {
         } catch (Exception e) {
             ConsoleUtils.printCenter(ConsoleUtils.RED + "Error: " + e.getMessage() + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
+            pauseMenu();
         }
     }
 
@@ -294,23 +310,12 @@ public class BookingManagementHandler {
         try {
             ConsoleUtils.clearScreen();
             System.out.println();
-            String[] logo = {
-                    "▗▄▄▖  ▗▄▖  ▗▄▖ ▗▖ ▗▖▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖    ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                    "▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌▗▞▘  █  ▐▛▚▖▐▌▐▌       ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                    "▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▚▖   █  ▐▌ ▝▜▌▐▌▝▜▌    ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                    "▐▙▄▞▘▝▚▄▞▘▝▚▄▞▘▐▌ ▐▌▗▄█▄▖▐▌  ▐▌▝▚▄▞▘    ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                    ""
-            };
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "BOOKING DETAILS" + ConsoleUtils.RESET, 145);
 
-            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 88);
-            ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "ＢＯＯＫＩＮＧ  ＤＥＴＡＩＬＳ" + ConsoleUtils.RESET, 145);
-
-            System.out.print(centerText(
-                    ConsoleUtils.YELLOW + "Enter booking ID: " + ConsoleUtils.RESET,
-                    ConsoleUtils.DEFAULT_WIDTH));
+            System.out.print(centerText(ConsoleUtils.YELLOW + "Enter booking ID: " + ConsoleUtils.RESET, 145));
 
             try {
-                int bookingId = Integer.parseInt(sc.nextLine().trim());
+                int bookingId = InputValidator.getIntInput(sc, "");
                 Booking booking = bookingDAO.findById(bookingId);
 
                 if (booking == null) {
@@ -333,6 +338,7 @@ public class BookingManagementHandler {
         } catch (Exception e) {
             ConsoleUtils.printCenter(ConsoleUtils.RED + "Error: " + e.getMessage() + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
+            pauseMenu();
         }
     }
 
@@ -380,26 +386,14 @@ public class BookingManagementHandler {
         try {
             ConsoleUtils.clearScreen();
             System.out.println();
-            String[] logo = {
-                    "▗▄▄▖  ▗▄▖  ▗▄▖ ▗▖ ▗▖▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖    ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                    "▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▌▗▞▘  █  ▐▛▚▖▐▌▐▌       ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                    "▐▛▀▚▖▐▌ ▐▌▐▌ ▐▌▐▛▚▖   █  ▐▌ ▝▜▌▐▌▝▜▌    ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                    "▐▙▄▞▘▝▚▄▞▘▝▚▄▞▘▐▌ ▐▌▗▄█▄▖▐▌  ▐▌▝▚▄▞▘    ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                    ""
-            };
-
-            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 88);
-            ConsoleUtils.printCenter(ConsoleUtils.GRAY + "ＡＬＬ  ＢＯＯＫＩＮＧＳ" + ConsoleUtils.RESET, 135);
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ALL BOOKINGS" + ConsoleUtils.RESET, 135);
 
             List<Booking> bookings = bookingDAO.findAll();
 
             if (bookings == null || bookings.isEmpty()) {
                 ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "No bookings found!" + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH);
-                System.out.println(centerText(
-                        ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
-                        ConsoleUtils.DEFAULT_WIDTH));
-                sc.nextLine();
+                pauseMenu();
                 return;
             }
 
@@ -435,14 +429,20 @@ public class BookingManagementHandler {
 
             ConsoleUtils.printTableFooter(columnWidths, 145);
             System.out.println();
-            System.out.println(centerText(
-                    ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
-                    ConsoleUtils.DEFAULT_WIDTH));
-            sc.nextLine();
+            pauseMenu();
 
         } catch (Exception e) {
             ConsoleUtils.printCenter(ConsoleUtils.RED + "Error: " + e.getMessage() + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
+            pauseMenu();
         }
+    }
+
+    private void pauseMenu() {
+        System.out.println();
+        System.out.print(centerText(
+                ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
+                ConsoleUtils.DEFAULT_WIDTH));
+        sc.nextLine();
     }
 }

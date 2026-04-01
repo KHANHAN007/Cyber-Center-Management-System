@@ -24,6 +24,9 @@ public class AppFactory {
     private static IFBOrderDAO fbOrderDAO;
     private static IComboDAO comboDAO;
     private static IVoucherCodeDAO voucherCodeDAO;
+    private static IOTPDAO otpDAO;
+    private static IOrderDetailDAO orderDetailDAO;
+    private static IFoodItemDAO foodItemDAO;
 
     private static IUserService userService;
     private static IBookingService bookingService;
@@ -45,11 +48,16 @@ public class AppFactory {
         fbOrderDAO = new FBOrderDAOImpl();
         comboDAO = new ComboDAOImpl();
         voucherCodeDAO = new VoucherCodeDAOImpl();
+        otpDAO = new OTPDAOImpl();
+        orderDetailDAO = new OrderDetailDAOImpl();
+        foodItemDAO = new FoodItemDAOImpl();
     }
 
     private static void initializeServices() {
         userService = new UserServiceImpl(userDAO, userProfileDAO, walletDAO, loyaltyPointsDAO, roleDAO);
-        bookingService = new BookingServiceImpl(bookingDAO, pcDAO, zoneDAO, checkInOutDAO);
+        bookingService = new BookingServiceImpl(bookingDAO, pcDAO, zoneDAO, checkInOutDAO, pcConfigDAO);
+        paymentService = new service.impl.PaymentServiceImpl(paymentDAO, bookingDAO, walletDAO, loyaltyPointsDAO);
+        orderService = new service.impl.OrderServiceImpl(fbOrderDAO, orderDetailDAO);
     }
 
     public static IUserService getUserService() {
@@ -134,10 +142,10 @@ public class AppFactory {
     }
 
     public static IFoodItemDAO getFoodItemDAO() {
-        if (fbOrderDAO == null) {
+        if (foodItemDAO == null) {
             initializeDAOs();
         }
-        return new FoodItemDAOImpl();
+        return foodItemDAO;
     }
 
     public static IComboDAO getComboDAO() {
@@ -152,5 +160,26 @@ public class AppFactory {
             initializeDAOs();
         }
         return voucherCodeDAO;
+    }
+
+    public static ICheckInOutDAO getCheckInOutDAO() {
+        if (checkInOutDAO == null) {
+            initializeDAOs();
+        }
+        return checkInOutDAO;
+    }
+
+    public static IWalletDAO getWalletDAO() {
+        if (walletDAO == null) {
+            initializeDAOs();
+        }
+        return walletDAO;
+    }
+
+    public static IOTPDAO getOTPDAO() {
+        if (otpDAO == null) {
+            initializeDAOs();
+        }
+        return otpDAO;
     }
 }

@@ -153,6 +153,26 @@ public class WalletDAOImpl extends BaseDAO implements IWalletDAO {
         return 0.0;
     }
 
+    @Override
+    public void recordTransaction(int walletId, double amount, String type) {
+        String sql = "INSERT INTO wallet_transaction (wallet_id, amount, type, created_at) VALUES (?, ?, ?, NOW())";
+        Connection conn = null;
+
+        try {
+            conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, walletId);
+            ps.setDouble(2, amount);
+            ps.setString(3, type);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException("Error recording wallet transaction: " + e.getMessage(), e);
+        } finally {
+            closeConnection(conn);
+        }
+    }
+
     private Wallet mapResultSetToWallet(ResultSet rs) throws SQLException {
         Wallet wallet = new Wallet();
         wallet.setWalletId(rs.getInt("wallet_id"));

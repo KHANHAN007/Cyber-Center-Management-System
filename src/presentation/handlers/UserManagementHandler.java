@@ -23,7 +23,7 @@ public class UserManagementHandler {
     public static final String CYAN = "\033[96m";
 
     public UserManagementHandler(Scanner sc, IUserService userService, IUserDAO userDAO,
-            ILoyaltyPointsDAO loyaltyPointsDAO) {
+                                 ILoyaltyPointsDAO loyaltyPointsDAO) {
         this.sc = sc;
         this.userService = userService;
         this.userDAO = userDAO;
@@ -42,6 +42,10 @@ public class UserManagementHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 72);
+            ConsoleUtils.printCenter(
+                    ConsoleUtils.CYAN + "━━━━━━━━ ＵＳＥＲ ＭＡＮＡＧＥＭＥＮＴ ━━━━━━━━" + ConsoleUtils.RESET,
+                    ConsoleUtils.DEFAULT_WIDTH);
+            System.out.println();
 
             String[] options = {
                     "1. View all users",
@@ -51,12 +55,21 @@ public class UserManagementHandler {
                     "5. Back"
             };
 
-            ConsoleUtils.printMenuOptions(options, ConsoleUtils.DEFAULT_WIDTH);
+            String[] colors = {
+                    ConsoleUtils.GREEN,
+                    ConsoleUtils.GREEN,
+                    ConsoleUtils.GREEN,
+                    ConsoleUtils.GREEN,
+                    ConsoleUtils.RED
+            };
+
+            ConsoleUtils.printMenuOptions(options, ConsoleUtils.DEFAULT_WIDTH, colors);
             System.out.println();
 
             System.out.print(
                     centerText(
-                            ConsoleUtils.YELLOW + "Choose an option (1-5): " + ConsoleUtils.RESET,
+                            ConsoleUtils.YELLOW + "Choose an option (1-5): "
+                                    + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH));
 
             try {
@@ -78,10 +91,12 @@ public class UserManagementHandler {
                         return;
                     default:
                         ConsoleUtils.printCenter(
-                                ConsoleUtils.RED + "Invalid choice!" + ConsoleUtils.RESET,
+                                ConsoleUtils.RED + "Invalid choice!"
+                                        + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH);
                         System.out.print(centerText(
-                                ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
+                                ConsoleUtils.YELLOW + "Press Enter to continue..."
+                                        + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH));
                         sc.nextLine();
                 }
@@ -121,13 +136,13 @@ public class UserManagementHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 25);
-            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "USER LIST" + ConsoleUtils.RESET, 190);
-            String[] headers = { "Id", "Code", "Username", "Password", "Email", "Role", "Status", "Deleted",
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━━━━━━━ USER LIST ━━━━━━━━" + ConsoleUtils.RESET, 194);
+            String[] headers = {"Id", "Code", "Username", "Email", "Role", "Status", "Deleted",
                     "Created At",
-                    "Updated At" };
-            int[] columnWidths = { 5, 8, 12, 70, 20, 15, 11, 7, 11, 11 };
+                    "Updated At"};
+            int[] columnWidths = {5, 8, 12, 20, 15, 11, 7, 11, 11};
 
-            ConsoleUtils.printTableHeader(headers, columnWidths, ConsoleUtils.DEFAULT_WIDTH);
+            ConsoleUtils.printTableHeader(headers, columnWidths, 194);
 
             for (int i = 0; i < users.size(); i++) {
                 User user = users.get(i);
@@ -135,9 +150,11 @@ public class UserManagementHandler {
                 String roleName = user.getRole() != null ? user.getRole().getRoleName() : "N/A";
                 String userCode = generateUserCode(user.getUserId());
 
-                String createdAt = user.getCreatedAt() != null ? user.getCreatedAt().toString().substring(0, 10)
+                String createdAt = user.getCreatedAt() != null
+                        ? user.getCreatedAt().toString().substring(0, 10)
                         : "N/A";
-                String updatedAt = user.getUpdatedAt() != null ? user.getUpdatedAt().toString().substring(0, 10)
+                String updatedAt = user.getUpdatedAt() != null
+                        ? user.getUpdatedAt().toString().substring(0, 10)
                         : "N/A";
                 String isDeleted = user.isDeleted() ? "Yes" : "No";
 
@@ -145,7 +162,7 @@ public class UserManagementHandler {
                         user.getUserId() > 0 ? String.valueOf(user.getUserId()) : "N/A",
                         userCode,
                         user.getUsername(),
-                        user.getPassword(),
+
                         user.getEmail(),
                         roleName,
                         status,
@@ -154,14 +171,14 @@ public class UserManagementHandler {
                         updatedAt
                 };
 
-                ConsoleUtils.printTableRow(rowData, columnWidths, ConsoleUtils.DEFAULT_WIDTH);
+                ConsoleUtils.printTableRow(rowData, columnWidths, 194);
 
                 if (i < users.size() - 1) {
-                    ConsoleUtils.printTableRowSeparator(columnWidths, ConsoleUtils.DEFAULT_WIDTH);
+                    ConsoleUtils.printTableRowSeparator(columnWidths, 194);
                 }
             }
 
-            ConsoleUtils.printTableFooter(columnWidths, ConsoleUtils.DEFAULT_WIDTH);
+            ConsoleUtils.printTableFooter(columnWidths, 194);
 
             System.out.println();
             System.out.print(centerText(
@@ -169,7 +186,9 @@ public class UserManagementHandler {
                     190));
             sc.nextLine();
         } catch (Exception e) {
-            ConsoleUtils.printCenter(ConsoleUtils.RED + "Error fetching users: " + e.getMessage() + ConsoleUtils.RESET,
+            ConsoleUtils.printCenter(
+                    ConsoleUtils.RED + "Error fetching users: " + e.getMessage()
+                            + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
         }
     }
@@ -187,31 +206,25 @@ public class UserManagementHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 72);
-            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ＢＬＯＣＫ ／ ＵＮＬＯＣＫ  ＵＳＥＲ" + ConsoleUtils.RESET, 134);
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━━━━━━━ ＢＬＯＣＫ ／ ＵＮＬＯＣＫ  ＵＳＥＲ ━━━━━━━━" + ConsoleUtils.RESET, 134);
             System.out.print(
-                    centerText(
-                            ConsoleUtils.YELLOW + "Enter user ID: " + ConsoleUtils.RESET,
-                            143));
+                    centerText(ConsoleUtils.YELLOW + "Enter user ID: " + ConsoleUtils.RESET, 143));
             try {
                 int userId = Integer.parseInt(sc.nextLine());
                 User user = userDAO.findById(userId);
                 if (user == null) {
-                    ConsoleUtils.printCenter(ConsoleUtils.RED + "User not found!" + ConsoleUtils.RESET,
-                            ConsoleUtils.DEFAULT_WIDTH);
+                    ConsoleUtils.printCenter(ConsoleUtils.RED + "User not found!" + ConsoleUtils.RESET, 143);
+                    System.out.print(centerText(ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET, ConsoleUtils.DEFAULT_WIDTH));
+                    sc.nextLine();
                     return;
                 }
 
                 String userCode = generateUserCode(user.getUserId());
-                String fullInfo = "User Code: " + userCode + " | Username: " + user.getUsername()
-                        + " | Status: " + user.getStatus().getDescription();
-                ConsoleUtils.printCenter(ConsoleUtils.CYAN + fullInfo + ConsoleUtils.RESET,
-                        ConsoleUtils.DEFAULT_WIDTH);
+                String fullInfo = "User Code: " + userCode + " | Username: " + user.getUsername() + " | Status: " + user.getStatus().getDescription();
+                ConsoleUtils.printCenter(ConsoleUtils.CYAN + fullInfo + ConsoleUtils.RESET, ConsoleUtils.DEFAULT_WIDTH);
 
-                String statusDescription = user.getStatus() == enums.UserStatus.ACTIVE
-                        ? "ACTIVE - User account is active and can login"
-                        : "BLOCKED - User account is blocked and cannot login";
-                ConsoleUtils.printCenter(ConsoleUtils.GREEN + statusDescription + ConsoleUtils.RESET,
-                        ConsoleUtils.DEFAULT_WIDTH);
+                String statusDescription = user.getStatus() == enums.UserStatus.ACTIVE ? "ACTIVE - User account is active and can login" : "BLOCKED - User account is blocked and cannot login";
+                ConsoleUtils.printCenter(ConsoleUtils.GREEN + statusDescription + ConsoleUtils.RESET, ConsoleUtils.DEFAULT_WIDTH);
                 System.out.println();
 
                 String[] blockUnblockOptions = {
@@ -221,10 +234,13 @@ public class UserManagementHandler {
                 };
 
                 String[] optionColors = user.getStatus() == enums.UserStatus.ACTIVE
-                        ? new String[] { ConsoleUtils.GREEN, ConsoleUtils.GRAY, ConsoleUtils.RED }
-                        : new String[] { ConsoleUtils.GRAY, ConsoleUtils.GREEN, ConsoleUtils.RED };
+                        ? new String[]{ConsoleUtils.GREEN, ConsoleUtils.GRAY,
+                        ConsoleUtils.RED}
+                        : new String[]{ConsoleUtils.GRAY, ConsoleUtils.GREEN,
+                        ConsoleUtils.RED};
 
-                ConsoleUtils.printMenuOptions(blockUnblockOptions, ConsoleUtils.DEFAULT_WIDTH, optionColors);
+                ConsoleUtils.printMenuOptions(blockUnblockOptions, ConsoleUtils.DEFAULT_WIDTH,
+                        optionColors);
                 System.out.print(centerText(
                         ConsoleUtils.YELLOW + "Enter your choice (1-3): " + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH));
@@ -236,7 +252,8 @@ public class UserManagementHandler {
                         userService.updateUser(user);
                         System.out.println();
                         ConsoleUtils.printCenter(
-                                ConsoleUtils.GREEN + "User blocked successfully" + ConsoleUtils.RESET,
+                                ConsoleUtils.GREEN + "User blocked successfully"
+                                        + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH);
                         break;
                     case 2:
@@ -244,17 +261,22 @@ public class UserManagementHandler {
                         userService.updateUser(user);
                         System.out.println();
                         ConsoleUtils.printCenter(
-                                ConsoleUtils.GREEN + "User unblocked successfully" + ConsoleUtils.RESET,
+                                ConsoleUtils.GREEN + "User unblocked successfully"
+                                        + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH);
                         break;
                     case 3:
                         System.out.println();
-                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "Operation cancelled" + ConsoleUtils.RESET,
+                        ConsoleUtils.printCenter(
+                                ConsoleUtils.CYAN + "Operation cancelled"
+                                        + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH);
                         break;
                     default:
                         System.out.println();
-                        ConsoleUtils.printCenter(ConsoleUtils.RED + "Invalid choice" + ConsoleUtils.RESET,
+                        ConsoleUtils.printCenter(
+                                ConsoleUtils.RED + "Invalid choice"
+                                        + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH);
                 }
 
@@ -269,7 +291,8 @@ public class UserManagementHandler {
             }
         } catch (Exception e) {
             ConsoleUtils.printCenter(
-                    ConsoleUtils.RED + "Error blocking/unblocking user: " + e.getMessage() + ConsoleUtils.RESET,
+                    ConsoleUtils.RED + "Error blocking/unblocking user: " + e.getMessage()
+                            + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
         }
     }
@@ -287,19 +310,18 @@ public class UserManagementHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 72);
-            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ＶＩＥＷ  ＵＳＥＲ  ＤＥＴＡＩＬＳ" + ConsoleUtils.RESET, 134);
-            System.out.println(
-                    centerText(
-                            ConsoleUtils.YELLOW + "Enter user ID: " + ConsoleUtils.RESET,
-                            143));
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━━━━━━━ ＶＩＥＷ  ＵＳＥＲ  ＤＥＴＡＩＬＳ ━━━━━━━━" + ConsoleUtils.RESET, 134);
+            System.out.print(centerText(ConsoleUtils.YELLOW + "Enter user ID: " + ConsoleUtils.RESET, 143));
             try {
                 int userId = Integer.parseInt(sc.nextLine());
                 UserProfile userProfile = userDAO.getUserWithProfile(userId);
                 if (userProfile == null || userProfile.getUserId() == 0) {
-                    ConsoleUtils.printCenter(ConsoleUtils.RED + "User not found!" + ConsoleUtils.RESET,
+                    ConsoleUtils.printCenter(
+                            ConsoleUtils.RED + "User not found!" + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH);
                     System.out.print(centerText(
-                            ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
+                            ConsoleUtils.YELLOW + "Press Enter to continue..."
+                                    + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH));
                     sc.nextLine();
                     return;
@@ -320,29 +342,30 @@ public class UserManagementHandler {
 
                 System.out.println();
                 String userCode = generateUserCode(userId);
-                String roleName = user != null && user.getRole() != null ? user.getRole().getRoleName() : "N/A";
+                String roleName = user != null && user.getRole() != null ? user.getRole().getRoleName()
+                        : "N/A";
                 String status = user != null ? user.getStatus().getDescription() : "N/A";
                 String fullName = userProfile.getFullName() != null ? userProfile.getFullName() : "N/A";
                 String phone = userProfile.getPhone() != null ? userProfile.getPhone() : "N/A";
                 String address = userProfile.getAddress() != null ? userProfile.getAddress() : "N/A";
                 int loyaltyPoints = userProfile.getLoyaltyPoints();
 
-                String[] headers = { "Field", "Value" };
-                int[] columnWidths = { 20, 70 };
+                String[] headers = {"Field", "Value"};
+                int[] columnWidths = {20, 70};
 
                 ConsoleUtils.printTableHeader(headers, columnWidths, 146);
 
                 String[][] tableData = {
-                        { "User ID", String.valueOf(userId) },
-                        { "User Code", userCode },
-                        { "Username", user != null ? user.getUsername() : "N/A" },
-                        { "Email", user != null ? user.getEmail() : "N/A" },
-                        { "Full Name", fullName },
-                        { "Phone", phone },
-                        { "Address", address },
-                        { "Loyalty Points", String.valueOf(loyaltyPoints) },
-                        { "Status", status },
-                        { "Role", roleName }
+                        {"User ID", String.valueOf(userId)},
+                        {"User Code", userCode},
+                        {"Username", user != null ? user.getUsername() : "N/A"},
+                        {"Email", user != null ? user.getEmail() : "N/A"},
+                        {"Full Name", fullName},
+                        {"Phone", phone},
+                        {"Address", address},
+                        {"Loyalty Points", String.valueOf(loyaltyPoints)},
+                        {"Status", status},
+                        {"Role", roleName}
                 };
 
                 for (int i = 0; i < tableData.length; i++) {
@@ -354,9 +377,7 @@ public class UserManagementHandler {
 
                 ConsoleUtils.printTableFooter(columnWidths, 146);
                 System.out.println();
-                System.out.println(centerText(
-                        ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
-                        ConsoleUtils.DEFAULT_WIDTH));
+                System.out.print(centerText(ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET, ConsoleUtils.DEFAULT_WIDTH));
                 sc.nextLine();
             } catch (NumberFormatException e) {
                 ConsoleUtils.printCenter(ConsoleUtils.RED + "Invalid user ID!" + ConsoleUtils.RESET,
@@ -364,10 +385,10 @@ public class UserManagementHandler {
                 System.out.println(centerText(
                         ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH));
-                sc.nextLine();
             } catch (Exception e) {
                 ConsoleUtils.printCenter(
-                        ConsoleUtils.RED + "Error fetching user details: " + e.getMessage() + ConsoleUtils.RESET,
+                        ConsoleUtils.RED + "Error fetching user details: " + e.getMessage()
+                                + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH);
                 System.out.println(centerText(
                         ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
@@ -376,7 +397,8 @@ public class UserManagementHandler {
             }
         } catch (Exception e) {
             ConsoleUtils.printCenter(
-                    ConsoleUtils.RED + "Error fetching user details: " + e.getMessage() + ConsoleUtils.RESET,
+                    ConsoleUtils.RED + "Error fetching user details: " + e.getMessage()
+                            + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
         }
     }
@@ -398,20 +420,19 @@ public class UserManagementHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 72);
-            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ＡＤＤ  ＬＯＹＡＬＴＹ  ＰＯＩＮＴＳ" + ConsoleUtils.RESET, 134);
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━━━━━━━ ＡＤＤ  ＬＯＹＡＬＴＹ  ＰＯＩＮＴＳ ━━━━━━━━" + ConsoleUtils.RESET, 134);
 
-            System.out.print(
-                    centerText(
-                            ConsoleUtils.YELLOW + "Enter user ID: " + ConsoleUtils.RESET,
-                            143));
+            System.out.print(centerText(ConsoleUtils.YELLOW + "Enter user ID: " + ConsoleUtils.RESET, 143));
             try {
                 int userId = Integer.parseInt(sc.nextLine());
                 User user = userDAO.findById(userId);
                 if (user == null) {
-                    ConsoleUtils.printCenter(ConsoleUtils.RED + "User not found!" + ConsoleUtils.RESET,
+                    ConsoleUtils.printCenter(
+                            ConsoleUtils.RED + "User not found!" + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH);
                     System.out.print(centerText(
-                            ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
+                            ConsoleUtils.YELLOW + "Press Enter to continue..."
+                                    + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH));
                     sc.nextLine();
                     return;
@@ -428,30 +449,29 @@ public class UserManagementHandler {
                         model.LoyaltyPoints newLoyaltyPoints = new model.LoyaltyPoints(userId);
                         loyaltyPointsDAO.create(newLoyaltyPoints);
                         ConsoleUtils.printCenter(
-                                ConsoleUtils.YELLOW + "Created loyalty points record for user." + ConsoleUtils.RESET,
+                                ConsoleUtils.YELLOW
+                                        + "Created loyalty points record for user."
+                                        + ConsoleUtils.RESET,
                                 ConsoleUtils.DEFAULT_WIDTH);
                     }
                 }
 
                 System.out.println();
-                ConsoleUtils.printCenter(
-                        ConsoleUtils.CYAN + "Current Loyalty Points: " + ConsoleUtils.GREEN + currentPoints
-                                + ConsoleUtils.RESET,
-                        ConsoleUtils.DEFAULT_WIDTH);
+                ConsoleUtils.printCenter(ConsoleUtils.CYAN + "Current Loyalty Points: " + ConsoleUtils.GREEN + currentPoints + ConsoleUtils.RESET, 150);
                 System.out.println();
 
-                System.out.print(
-                        centerText(
-                                ConsoleUtils.YELLOW + "Enter points to add: " + ConsoleUtils.RESET,
-                                143));
+                System.out.print(centerText(ConsoleUtils.YELLOW + "Enter points to add: " + ConsoleUtils.RESET, 143));
                 int points = Integer.parseInt(sc.nextLine());
 
                 if (points <= 0) {
                     System.out.println();
-                    ConsoleUtils.printCenter(ConsoleUtils.RED + "Points must be greater than 0!" + ConsoleUtils.RESET,
+                    ConsoleUtils.printCenter(
+                            ConsoleUtils.RED + "Points must be greater than 0!"
+                                    + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH);
                     System.out.print(centerText(
-                            ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
+                            ConsoleUtils.YELLOW + "Press Enter to continue..."
+                                    + ConsoleUtils.RESET,
                             ConsoleUtils.DEFAULT_WIDTH));
                     sc.nextLine();
                     return;
@@ -462,12 +482,15 @@ public class UserManagementHandler {
 
                 System.out.println();
                 ConsoleUtils.printCenter(
-                        ConsoleUtils.GREEN + "Successfully added " + points + " points!" + ConsoleUtils.RESET,
+                        ConsoleUtils.GREEN + "Successfully added " + points + " points!"
+                                + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH);
                 System.out.println();
                 ConsoleUtils.printCenter(
-                        ConsoleUtils.CYAN + "Old Points: " + ConsoleUtils.YELLOW + currentPoints + ConsoleUtils.CYAN +
-                                " → New Points: " + ConsoleUtils.GREEN + newPoints + ConsoleUtils.RESET,
+                        ConsoleUtils.CYAN + "Old Points: " + ConsoleUtils.YELLOW + currentPoints
+                                + ConsoleUtils.CYAN +
+                                " → New Points: " + ConsoleUtils.GREEN + newPoints
+                                + ConsoleUtils.RESET,
                         ConsoleUtils.DEFAULT_WIDTH);
 
                 System.out.println();
@@ -485,7 +508,8 @@ public class UserManagementHandler {
             }
         } catch (Exception e) {
             ConsoleUtils.printCenter(
-                    ConsoleUtils.RED + "Error adding loyalty points: " + e.getMessage() + ConsoleUtils.RESET,
+                    ConsoleUtils.RED + "Error adding loyalty points: " + e.getMessage()
+                            + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
             System.out.print(centerText(
                     ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,

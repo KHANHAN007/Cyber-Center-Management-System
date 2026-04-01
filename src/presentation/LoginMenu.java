@@ -1,9 +1,16 @@
 package presentation;
 
+import dao.interfaces.ILoyaltyPointsDAO;
+import dao.interfaces.IOTPDAO;
 import dao.interfaces.IUserDAO;
+import dao.interfaces.IWalletDAO;
 import exception.BusinessException;
 import model.User;
+import service.interfaces.IBookingService;
+import service.interfaces.IOrderService;
+import service.interfaces.IPaymentService;
 import service.interfaces.IUserService;
+import utils.AppFactory;
 import utils.InputValidator;
 
 import java.util.HashMap;
@@ -17,7 +24,7 @@ public class LoginMenu {
     private IUserDAO userDAO;
     private Scanner scanner;
     private static final Map<String, Long> lockedAccounts = new HashMap<>();
-    private static final long LOCK_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+    private static final long LOCK_DURATION = 5 * 60 * 1000;
 
     public LoginMenu(Scanner scanner, IUserService userService, IUserDAO userDAO) {
         this.scanner = scanner;
@@ -37,7 +44,7 @@ public class LoginMenu {
                     "░▀▀▀░░▀░░▀▀░░▀▀▀░▀░▀░░░▀░▀░▀░▀░▀▀▀░▀░▀░▀░▀"
             };
 
-            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 41);
+            ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 37);
 
             System.out.println();
 
@@ -100,14 +107,12 @@ public class LoginMenu {
             System.out.print(ConsoleUtils.centerText(ConsoleUtils.GREEN + "Username: " + ConsoleUtils.RESET, width));
             String username = scanner.nextLine();
 
-            // Check if account is locked
             if (isAccountLocked(username)) {
                 displayLockMessage(username, width);
                 return null;
             }
 
-            System.out.print(ConsoleUtils.centerText(ConsoleUtils.GREEN + "Password: " + ConsoleUtils.RESET, width));
-            String password = scanner.nextLine();
+            String password = InputValidator.readPasswordInput(scanner, width);
 
             try {
                 User user = userService.login(username, password);
@@ -221,17 +226,7 @@ public class LoginMenu {
             break;
         }
 
-        String password;
-        while (true) {
-            System.out.print(ConsoleUtils.centerText(ConsoleUtils.GREEN + "Password: " + ConsoleUtils.RESET, width));
-            password = scanner.nextLine();
-
-            if (InputValidator.isValidPassword(password))
-                break;
-
-            ConsoleUtils.printCenter(
-                    ConsoleUtils.RED + "Password must be 6 or more characters long!" + ConsoleUtils.RESET, width);
-        }
+        String password = InputValidator.readPasswordInput(scanner, width);
 
         String fullName;
         while (true) {
@@ -291,7 +286,8 @@ public class LoginMenu {
         while (true) {
             System.out.println();
             System.out.print(ConsoleUtils.centerText(
-                    ConsoleUtils.CYAN + "Enter referral phone (optional, press Enter to skip, get 200 bonus points): " + ConsoleUtils.RESET,
+                    ConsoleUtils.CYAN + "Enter referral phone (optional, press Enter to skip, get 200 bonus points): "
+                            + ConsoleUtils.RESET,
                     width));
             referralPhone = scanner.nextLine();
 
@@ -336,6 +332,27 @@ public class LoginMenu {
                     ConsoleUtils.YELLOW + "Press Enter to continue..." + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH));
             scanner.nextLine();
+        }
+    }
+
+    public static class CustomerMenu {
+        private Scanner sc;
+        private IBookingService bookingService;
+        private IPaymentService paymentService;
+        private IOrderService orderService;
+        private IWalletDAO walletDAO;
+        private ILoyaltyPointsDAO loyaltyDAO;
+        private IOTPDAO otpDAO;
+
+        public CustomerMenu(Scanner sc, IBookingService bookingService, IPaymentService paymentService,
+                            IOrderService orderService) {
+            this.sc = sc;
+            this.bookingService = bookingService;
+            this.paymentService = paymentService;
+            this.orderService = orderService;
+            this.walletDAO = AppFactory.getWalletDAO();
+            this.loyaltyDAO = AppFactory.getLoyaltyPointsDAO();
+            this.otpDAO = AppFactory.getOTPDAO();
         }
     }
 }

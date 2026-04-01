@@ -60,16 +60,45 @@ public class PCDAOImpl extends BaseDAO implements IPCDAO {
     @Override
     public List<PC> findAll() {
         List<PC> pcs = new ArrayList<>();
-        String sql = "SELECT * FROM pc WHERE is_deleted = FALSE";
+        String sql = "{CALL sp_GetAllPCsWithDetails()}";
         Connection conn = null;
 
         try {
             conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            CallableStatement cs = conn.prepareCall(sql);
+            ResultSet rs = cs.executeQuery();
 
             while (rs.next()) {
-                pcs.add(mapResultSetToPC(rs));
+                PC pc = new PC();
+                pc.setPcId(rs.getInt("pc_id"));
+                pc.setPcCode(rs.getString("pc_code"));
+                pc.setPcName(rs.getString("pc_name"));
+                pc.setZoneId(rs.getInt("zone_id"));
+                pc.setConfigId(rs.getInt("config_id"));
+                pc.setStatus(PCStatus.valueOf(rs.getString("pc_status")));
+                pc.setDeleted(rs.getBoolean("is_deleted"));
+
+
+                if (rs.getInt("zone_id_detail") > 0) {
+                    model.Zone zone = new model.Zone();
+                    zone.setZoneId(rs.getInt("zone_id_detail"));
+                    zone.setZoneName(rs.getString("zone_name"));
+                    pc.setZone(zone);
+                }
+
+
+                if (rs.getInt("config_id_detail") > 0) {
+                    model.PCConfig config = new model.PCConfig();
+                    config.setConfigId(rs.getInt("config_id_detail"));
+                    config.setConfigCode(rs.getString("config_code"));
+                    config.setCpu(rs.getString("cpu"));
+                    config.setRam(rs.getInt("ram"));
+                    config.setGpu(rs.getString("gpu"));
+                    config.setPricePerHour(rs.getDouble("price_per_hour"));
+                    pc.setConfig(config);
+                }
+
+                pcs.add(pc);
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error finding all PCs: " + e.getMessage(), e);

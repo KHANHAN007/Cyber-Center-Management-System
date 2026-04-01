@@ -122,8 +122,9 @@ public class BookingDAOImpl extends BaseDAO implements IBookingDAO {
 
     @Override
     public void create(Booking booking) {
-        String sql = "INSERT INTO booking (booking_code, user_id, pc_id, start_time, end_time, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO booking (booking_code, user_id, pc_id, start_time, end_time, status, is_paid, payment_method, total_price) "
+                +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection conn = null;
 
         try {
@@ -131,15 +132,26 @@ public class BookingDAOImpl extends BaseDAO implements IBookingDAO {
             String bookingCode = CodeGenerator.generateUniqueCode(CodeGenerator.PREFIX_BOOKING, "booking",
                     "booking_code", conn);
 
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, bookingCode);
             ps.setInt(2, booking.getUserId());
             ps.setInt(3, booking.getPcId());
             ps.setTimestamp(4, Timestamp.valueOf(booking.getStartTime()));
             ps.setTimestamp(5, Timestamp.valueOf(booking.getEndTime()));
             ps.setString(6, booking.getStatus().getValue());
+            ps.setBoolean(7, booking.isPaid());
+            ps.setString(8, booking.getPaymentMethod() != null ? booking.getPaymentMethod() : "CASH");
+            ps.setDouble(9, booking.getTotalPrice());
 
             ps.executeUpdate();
+
+
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int bookingId = generatedKeys.getInt(1);
+                booking.setBookingId(bookingId);
+                booking.setBookingCode(bookingCode);
+            }
         } catch (SQLException e) {
             throw new DatabaseException("Error creating booking: " + e.getMessage(), e);
         } finally {
@@ -149,7 +161,8 @@ public class BookingDAOImpl extends BaseDAO implements IBookingDAO {
 
     @Override
     public void update(Booking booking) {
-        String sql = "UPDATE booking SET user_id = ?, pc_id = ?, start_time = ?, end_time = ?, status = ? WHERE booking_id = ?";
+        String sql = "UPDATE booking SET user_id = ?, pc_id = ?, start_time = ?, end_time = ?, status = ?, " +
+                "voucher_id = ?, discount_amount = ?, is_paid = ?, payment_method = ?, paid_at = ? WHERE booking_id = ?";
         Connection conn = null;
 
         try {
@@ -160,7 +173,12 @@ public class BookingDAOImpl extends BaseDAO implements IBookingDAO {
             ps.setTimestamp(3, Timestamp.valueOf(booking.getStartTime()));
             ps.setTimestamp(4, Timestamp.valueOf(booking.getEndTime()));
             ps.setString(5, booking.getStatus().getValue());
-            ps.setInt(6, booking.getBookingId());
+            ps.setObject(6, booking.getVoucherId());
+            ps.setObject(7, booking.getDiscountAmount());
+            ps.setBoolean(8, booking.isPaid());
+            ps.setString(9, booking.getPaymentMethod() != null ? booking.getPaymentMethod() : "CASH");
+            ps.setObject(10, booking.getPaidAt());
+            ps.setInt(11, booking.getBookingId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -256,6 +274,11 @@ public class BookingDAOImpl extends BaseDAO implements IBookingDAO {
         booking.setVoucherId(rs.getObject("voucher_id") != null ? rs.getInt("voucher_id") : null);
         booking.setDiscountAmount(rs.getObject("discount_amount") != null ? rs.getDouble("discount_amount") : null);
         booking.setStatus(BookingStatus.fromValue(rs.getString("status")));
+        booking.setPaid(rs.getBoolean("is_paid"));
+        booking.setPaymentMethod(rs.getString("payment_method"));
+        if (rs.getTimestamp("paid_at") != null) {
+            booking.setPaidAt(rs.getTimestamp("paid_at").toLocalDateTime());
+        }
         if (rs.getTimestamp("created_at") != null) {
             booking.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         }

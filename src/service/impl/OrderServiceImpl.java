@@ -9,6 +9,7 @@ import model.FBOrder;
 import model.OrderDetail;
 import service.interfaces.IOrderService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderServiceImpl implements IOrderService {
@@ -22,13 +23,48 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public FBOrder createOrder(int bookingId) {
-        if (bookingId <= 0) {
+        if (bookingId < 0) {
             throw new InvalidDataException("Invalid booking ID");
         }
         FBOrder order = new FBOrder(bookingId, OrderStatus.PENDING);
         order.setTotalPrice(0);
         fbOrderDAO.create(order);
         return order;
+    }
+
+
+    @Override
+    public FBOrder createOrderInMemory(int bookingId) {
+        if (bookingId < 0) {
+            throw new InvalidDataException("Invalid booking ID");
+        }
+        FBOrder order = new FBOrder(bookingId, OrderStatus.PENDING);
+        order.setTotalPrice(0);
+        order.setCreatedAt(LocalDateTime.now());
+
+        return order;
+    }
+
+
+    @Override
+    public void saveOrder(FBOrder order, List<OrderDetail> details) {
+        if (order == null) {
+            throw new InvalidDataException("Order cannot be null");
+        }
+
+
+        fbOrderDAO.create(order);
+
+
+        if (details != null && !details.isEmpty()) {
+            for (OrderDetail detail : details) {
+                detail.setOrderId(order.getOrderId());
+                orderDetailDAO.create(detail);
+            }
+
+
+            updateOrderTotalPrice(order.getOrderId());
+        }
     }
 
     @Override
@@ -42,8 +78,10 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public void addItemToOrder(int orderId, int itemId, int sizeId, int quantity, double price) {
-        if (orderId <= 0 || itemId <= 0 || quantity <= 0 || price < 0) {
-            throw new InvalidDataException("Invalid order item data");
+
+        if (orderId <= 0 || itemId == 0 || quantity <= 0 || price <= 0) {
+            throw new InvalidDataException("Invalid order item data: orderId=" + orderId + ", itemId=" + itemId +
+                    ", quantity=" + quantity + ", price=" + price);
         }
 
         FBOrder order = fbOrderDAO.findById(orderId);
@@ -53,10 +91,20 @@ public class OrderServiceImpl implements IOrderService {
 
         OrderDetail detail = new OrderDetail();
         detail.setOrderId(orderId);
-        detail.setItemId(itemId);
         detail.setSizeId(sizeId);
         detail.setQuantity(quantity);
         detail.setPrice(price);
+
+
+        if (itemId > 0) {
+
+            detail.setItemId(itemId);
+            detail.setComboId(0);
+        } else {
+
+            detail.setItemId(0);
+            detail.setComboId(Math.abs(itemId));
+        }
 
         orderDetailDAO.create(detail);
         updateOrderTotalPrice(orderId);
@@ -100,6 +148,7 @@ public class OrderServiceImpl implements IOrderService {
         FBOrder order = fbOrderDAO.findById(orderId);
         if (order != null) {
             order.setTotalPrice(totalPrice);
+            fbOrderDAO.update(order);
         }
     }
 }

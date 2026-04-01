@@ -1,3 +1,4 @@
+import presentation.ConsoleUtils;
 import presentation.LoginMenu;
 import presentation.MainMenu;
 import model.User;
@@ -61,7 +62,7 @@ public class Main {
         }
 
         System.out.println("\033[0m");
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         clearScreen();
     }
 

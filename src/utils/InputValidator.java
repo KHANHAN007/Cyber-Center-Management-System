@@ -1,5 +1,7 @@
 package utils;
 
+import presentation.ConsoleUtils;
+
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -84,10 +86,6 @@ public class InputValidator {
         return null;
     }
 
-    public static boolean isValidPassword(String password) {
-        return password != null && password.length() >= 6;
-    }
-
     public static boolean isValidFullName(String fullName) {
         return fullName != null && !fullName.trim().isEmpty() && fullName.length() >= 3 &&
                 !fullName.contains("'") && !fullName.contains("\"") && !fullName.contains(";");
@@ -129,19 +127,15 @@ public class InputValidator {
         return getIntInput(scanner, "Enter your choice: ");
     }
 
-    // Validation loop method - continues looping until valid input or skip
     public static String getValidatedInput(Scanner sc, String prompt, String skipOption, ValidationRule rule,
             String errorMessage) {
         while (true) {
             System.out.print(prompt);
             String input = sc.nextLine().trim();
-
-            // Allow skip if input is empty or matches skipOption
             if (input.isEmpty() || input.equals(skipOption)) {
-                return null; // null indicates skip
+                return null;
             }
 
-            // Check if input passes validation
             if (rule.validate(input)) {
                 return input;
             } else {
@@ -150,7 +144,6 @@ public class InputValidator {
         }
     }
 
-    // Validation loop for yes/no prompts
     public static String getYesNoInput(Scanner sc, String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -161,23 +154,20 @@ public class InputValidator {
             } else if (input.equals("n") || input.equals("no")) {
                 return "n";
             } else if (input.isEmpty()) {
-                return null; // Skip
+                return null;
             } else {
                 System.err.println("Please enter 'y', 'n', or press Enter to skip.");
             }
         }
     }
 
-    // Validation loop for numeric input with custom validation
     public static Double getValidatedDouble(Scanner sc, String prompt, ValidationRule rule, String errorMessage,
             boolean allowSkip) {
         while (true) {
             System.out.print(prompt);
             String input = sc.nextLine().trim();
-
-            // Allow skip
             if (allowSkip && (input.isEmpty() || input.equals("0"))) {
-                return null; // null indicates skip
+                return null;
             }
 
             try {
@@ -193,18 +183,14 @@ public class InputValidator {
         }
     }
 
-    // Validation loop for integer input with custom validation
     public static Integer getValidatedInt(Scanner sc, String prompt, ValidationRule rule, String errorMessage,
             boolean allowSkip) {
         while (true) {
             System.out.print(prompt);
             String input = sc.nextLine().trim();
-
-            // Allow skip
             if (allowSkip && input.isEmpty()) {
-                return null; // null indicates skip
+                return null;
             }
-
             try {
                 int value = Integer.parseInt(input);
                 if (rule.validate(String.valueOf(value))) {
@@ -216,5 +202,40 @@ public class InputValidator {
                 System.err.println("Invalid input. Please enter a valid integer.");
             }
         }
+    }
+
+    public static String readPasswordInput(Scanner scanner, int width) {
+        String password;
+        while (true) {
+            System.out.print(ConsoleUtils.centerText(
+                    ConsoleUtils.GREEN + "Password: " + ConsoleUtils.RESET, width));
+
+            password = readPasswordMasked(scanner);
+
+            if (isValidPassword(password))
+                break;
+
+            ConsoleUtils.printCenter(
+                    ConsoleUtils.RED + "Password must be 6 or more characters long!" + ConsoleUtils.RESET, width);
+        }
+        return password;
+    }
+
+
+    public static String readPasswordMasked(Scanner scanner) {
+        StringBuilder password = new StringBuilder();
+        String line = scanner.nextLine();
+
+        for (int i = 0; i < line.length(); i++) {
+            System.out.print("*");
+            password.append(line.charAt(i));
+        }
+        System.out.println();
+
+        return password.toString();
+    }
+
+    public static boolean isValidPassword(String password) {
+        return password != null && password.length() >= 6;
     }
 }

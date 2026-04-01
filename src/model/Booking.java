@@ -16,6 +16,9 @@ public class Booking {
     private Integer voucherId;
     private Double discountAmount;
     private BookingStatus status;
+    private boolean isPaid;
+    private String paymentMethod;
+    private LocalDateTime paidAt;
     private LocalDateTime createdAt;
     private User user;
     private PC pc;
@@ -131,6 +134,30 @@ public class Booking {
         this.status = status;
     }
 
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public LocalDateTime getPaidAt() {
+        return paidAt;
+    }
+
+    public void setPaidAt(LocalDateTime paidAt) {
+        this.paidAt = paidAt;
+    }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
@@ -149,6 +176,8 @@ public class Booking {
                 "bookingId=" + bookingId +
                 ", bookingCode='" + bookingCode + '\'' +
                 ", status='" + status + '\'' +
+                ", isPaid=" + isPaid +
+                ", paymentMethod='" + paymentMethod + '\'' +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 '}';

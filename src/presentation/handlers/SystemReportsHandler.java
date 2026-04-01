@@ -107,12 +107,12 @@ public class SystemReportsHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 58);
-            ConsoleUtils.printCenter(ConsoleUtils.GREEN + "━━━━━━━━━ ＢＯＯＫＩＮＧ ＳＴＡＴＩＳＴＩＣＳ ━━━━━━━━━" + ConsoleUtils.RESET,
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━━━━━━━━ ＢＯＯＫＩＮＧ ＳＴＡＴＩＳＴＩＣＳ ━━━━━━━━━" + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
             System.out.println();
 
             List<Booking> allBookings = bookingDAO.findAll();
-            
+
             int totalBookings = allBookings.size();
             int pending = 0, confirmed = 0, inProgress = 0, completed = 0, cancelled = 0;
             BigDecimal totalRevenue = BigDecimal.ZERO;
@@ -121,20 +121,25 @@ public class SystemReportsHandler {
 
             for (Booking booking : allBookings) {
                 BookingStatus status = booking.getStatus();
-                if (status == BookingStatus.PENDING) pending++;
-                else if (status == BookingStatus.CONFIRMED) confirmed++;
-                else if (status == BookingStatus.IN_PROGRESS) inProgress++;
+                if (status == BookingStatus.PENDING)
+                    pending++;
+                else if (status == BookingStatus.CONFIRMED)
+                    confirmed++;
+                else if (status == BookingStatus.IN_PROGRESS)
+                    inProgress++;
                 else if (status == BookingStatus.COMPLETED) {
                     completed++;
                     double priceValue = booking.getTotalPrice();
                     BigDecimal price = BigDecimal.valueOf(priceValue);
                     if (price.compareTo(BigDecimal.ZERO) > 0) {
                         totalRevenue = totalRevenue.add(price);
-                        if (price.compareTo(maxBooking) > 0) maxBooking = price;
-                        if (minBooking == null || price.compareTo(minBooking) < 0) minBooking = price;
+                        if (price.compareTo(maxBooking) > 0)
+                            maxBooking = price;
+                        if (minBooking == null || price.compareTo(minBooking) < 0)
+                            minBooking = price;
                     }
-                }
-                else if (status == BookingStatus.CANCELLED) cancelled++;
+                } else if (status == BookingStatus.CANCELLED)
+                    cancelled++;
             }
 
             ConsoleUtils.printCenter(ConsoleUtils.CYAN + "Overview Statistics" + ConsoleUtils.RESET,
@@ -154,7 +159,10 @@ public class SystemReportsHandler {
                     { "Completed", String.valueOf(completed) },
                     { "Cancelled", String.valueOf(cancelled) },
                     { "Total Revenue", "₫" + totalRevenue },
-                    { "Average Booking Price", completed > 0 ? "₫" + totalRevenue.divide(BigDecimal.valueOf(completed), RoundingMode.HALF_UP) : "N/A" },
+                    { "Average Booking Price",
+                            completed > 0
+                                    ? "₫" + totalRevenue.divide(BigDecimal.valueOf(completed), RoundingMode.HALF_UP)
+                                    : "N/A" },
                     { "Max Booking Price", "₫" + (maxBooking.compareTo(BigDecimal.ZERO) > 0 ? maxBooking : 0) },
                     { "Min Booking Price", minBooking != null ? "₫" + minBooking : "N/A" }
             };
@@ -195,7 +203,7 @@ public class SystemReportsHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 58);
-            ConsoleUtils.printCenter(ConsoleUtils.GREEN + "━━━━━━━━━━ ＵＳＥＲ ＳＴＡＴＩＳＴＩＣＳ ━━━━━━━━━━" + ConsoleUtils.RESET,
+            ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━━━━━━━━━ ＵＳＥＲ ＳＴＡＴＩＳＴＩＣＳ ━━━━━━━━━━" + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
             System.out.println();
 
@@ -207,13 +215,19 @@ public class SystemReportsHandler {
 
             for (User user : allUsers) {
                 UserStatus status = user.getStatus();
-                if (status == UserStatus.ACTIVE) active++;
-                else if (status == UserStatus.INACTIVE) inactive++;
-                else if (status == UserStatus.BLOCKED) blocked++;
+                if (status == UserStatus.ACTIVE)
+                    active++;
+                else if (status == UserStatus.INACTIVE)
+                    inactive++;
+                else if (status == UserStatus.BLOCKED)
+                    blocked++;
 
-                if (user.getRoleId() == 1) admin++;
-                else if (user.getRoleId() == 2) staff++;
-                else if (user.getRoleId() == 3) customer++;
+                if (user.getRoleId() == 1)
+                    admin++;
+                else if (user.getRoleId() == 2)
+                    staff++;
+                else if (user.getRoleId() == 3)
+                    customer++;
             }
 
             ConsoleUtils.printCenter(ConsoleUtils.CYAN + "Overview Statistics" + ConsoleUtils.RESET,
@@ -271,12 +285,13 @@ public class SystemReportsHandler {
             };
 
             ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 58);
-            ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "━━━━━━━━━━━ ＲＥＶＥＮＵＥ ＲＥＰＯＲＴ ━━━━━━━━━━━" + ConsoleUtils.RESET,
+            ConsoleUtils.printCenter(
+                    ConsoleUtils.CYAN + "━━━━━━━━━━━ ＲＥＶＥＮＵＥ ＲＥＰＯＲＴ ━━━━━━━━━━━" + ConsoleUtils.RESET,
                     ConsoleUtils.DEFAULT_WIDTH);
             System.out.println();
 
             List<Booking> allBookings = bookingDAO.findAll();
-            
+
             BigDecimal totalRevenue = BigDecimal.ZERO;
             BigDecimal totalFromCompleted = BigDecimal.ZERO;
             int completedCount = 0, cancelledCount = 0;
@@ -306,7 +321,9 @@ public class SystemReportsHandler {
                     { "Total Revenue", "₫" + totalRevenue },
                     { "Revenue from Completed Bookings", "₫" + totalFromCompleted },
                     { "Completed Bookings Count", String.valueOf(completedCount) },
-                    { "Average per Booking", completedCount > 0 ? "₫" + totalFromCompleted.divide(BigDecimal.valueOf(completedCount), RoundingMode.HALF_UP) : "N/A" },
+                    { "Average per Booking",
+                            completedCount > 0 ? "₫" + totalFromCompleted.divide(BigDecimal.valueOf(completedCount),
+                                    RoundingMode.HALF_UP) : "N/A" },
                     { "Cancelled Bookings (Lost)", String.valueOf(cancelledCount) }
             };
 

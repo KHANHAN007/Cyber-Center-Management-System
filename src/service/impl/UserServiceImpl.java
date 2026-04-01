@@ -1,6 +1,5 @@
 package service.impl;
 
-import dao.BaseDAO;
 import dao.interfaces.*;
 import enums.UserStatus;
 import exception.BusinessException;
@@ -112,11 +111,11 @@ public class UserServiceImpl implements IUserService {
             loyaltyPoints.setLoyaltyId(0);
             loyaltyPointsDAO.create(loyaltyPoints);
 
-            // Handle referral bonus
+
             if (referralPhone != null && !referralPhone.trim().isEmpty()) {
                 User referrerUser = userDAO.findUserByPhone(referralPhone.trim());
                 if (referrerUser != null) {
-                    // Add 200 points to both new user and referrer
+
                     loyaltyPointsDAO.addPoints(newUser.getUserId(), 200);
                     loyaltyPointsDAO.addPoints(referrerUser.getUserId(), 200);
                 }

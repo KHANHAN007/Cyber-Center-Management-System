@@ -5,6 +5,8 @@ import dao.interfaces.IFBOrderDAO;
 import enums.OrderStatus;
 import exception.DatabaseException;
 import model.FBOrder;
+import utils.CodeGenerator;
+import utils.DBConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,17 +21,17 @@ public class FBOrderDAOImpl extends BaseDAO implements IFBOrderDAO {
     public FBOrder findById(int orderId) {
         String sql = "SELECT * FROM fb_order WHERE order_id = ?";
         Connection conn = null;
-        try{
+        try {
             conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return mapResultSetToOrder(rs);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Error finding order by ID: " + e.getMessage(), e);
-        }finally {
+        } finally {
             closeConnection(conn);
         }
         return null;
@@ -39,17 +41,17 @@ public class FBOrderDAOImpl extends BaseDAO implements IFBOrderDAO {
     public FBOrder findByBookingId(int bookingId) {
         String sql = "SELECT * FROM fb_order WHERE booking_id = ?";
         Connection conn = null;
-        try{
+        try {
             conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, bookingId);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 return mapResultSetToOrder(rs);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DatabaseException("Error finding order by booking ID: " + e.getMessage(), e);
-        }finally {
+        } finally {
             closeConnection(conn);
         }
         return null;
@@ -79,25 +81,50 @@ public class FBOrderDAOImpl extends BaseDAO implements IFBOrderDAO {
 
     @Override
     public void create(FBOrder order) {
-        String orderCode = "ORD" + System.currentTimeMillis();
-        String sql = "INSERT INTO fb_order (order_code, booking_id, total_price, status) VALUES (?, ?, ?, ?)";
-        Connection conn = null;
-
+        Connection dbConn = null;
         try {
-            conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, orderCode);
-            ps.setInt(2, order.getBookingId());
-            ps.setDouble(3, order.getTotalPrice());
-            ps.setString(4, order.getStatus().getValue());
+            dbConn = DBConnection.getConnection();
+            String orderCode = CodeGenerator.generateUniqueCode(CodeGenerator.PREFIX_ORDER, "fb_order", "order_code",
+                    dbConn);
+            String sql = "INSERT INTO fb_order (order_code, booking_id, total_price, status) VALUES (?, ?, ?, ?)";
+            Connection conn = null;
 
-            ps.executeUpdate();
+            try {
+                conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, orderCode);
+
+
+                if (order.getBookingId() != null && order.getBookingId() > 0) {
+                    ps.setInt(2, order.getBookingId());
+                } else {
+                    ps.setNull(2, java.sql.Types.INTEGER);
+                }
+
+                ps.setDouble(3, order.getTotalPrice());
+                ps.setString(4, order.getStatus().getValue());
+
+                ps.executeUpdate();
+
+
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    order.setOrderId(generatedKeys.getInt(1));
+                }
+            } catch (SQLException e) {
+                throw new DatabaseException("Error creating order: " + e.getMessage(), e);
+            } finally {
+                closeConnection(conn);
+            }
         } catch (SQLException e) {
-            throw new DatabaseException("Error creating order: " + e.getMessage(), e);
+            throw new DatabaseException("Error generating order code: " + e.getMessage(), e);
         } finally {
-            closeConnection(conn);
+            if (dbConn != null) {
+                DBConnection.closeConnection(dbConn);
+            }
         }
     }
+
     @Override
     public void update(FBOrder order) {
         String sql = "UPDATE fb_order SET booking_id = ?, total_price = ?, status = ? WHERE order_id = ?";

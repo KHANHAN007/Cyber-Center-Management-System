@@ -64,6 +64,10 @@ public class PC {
         this.configId = configId;
     }
 
+    public String getConfigCode() {
+        return config != null ? config.getConfigCode() : null;
+    }
+
     public PCStatus getStatus() {
         return status;
     }

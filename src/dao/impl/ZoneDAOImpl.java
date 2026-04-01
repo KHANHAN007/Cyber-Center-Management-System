@@ -62,7 +62,6 @@ public class ZoneDAOImpl extends BaseDAO implements IZoneDAO {
         try {
             conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
-            String userCode = CodeGenerator.generateUniqueCode(CodeGenerator.PREFIX_USER, "user", "user_code", conn);
 
             ps.setString(1, CodeGenerator.generateZoneCode());
             ps.setString(2, zone.getZoneName());

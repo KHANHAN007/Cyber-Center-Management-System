@@ -59,7 +59,7 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
             while (rs.next()) {
                 int comboId = rs.getInt("combo_id");
 
-                // Nếu là combo khác, lưu combo cũ và tạo combo mới
+
                 if (currentCombo == null || currentCombo.getComboId() != comboId) {
                     if (currentCombo != null && itemsBuilder.length() > 0) {
                         currentCombo.setContainedItems(itemsBuilder.toString());
@@ -77,8 +77,8 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
                     itemsBuilder = new StringBuilder();
                 }
 
-                // Thêm item vào contained_items (kiểm tra item_code để xác định có item hay
-                // không)
+
+
                 if (rs.getString("item_code") != null) {
                     if (itemsBuilder.length() > 0) {
                         itemsBuilder.append(", ");
@@ -90,7 +90,7 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
                 }
             }
 
-            // Lưu combo cuối cùng
+
             if (currentCombo != null && itemsBuilder.length() > 0) {
                 currentCombo.setContainedItems(itemsBuilder.toString());
             }
@@ -112,9 +112,9 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
 
         try {
             conn = getConnection();
-            conn.setAutoCommit(false); // Bắt đầu transaction
+            conn.setAutoCommit(false);
 
-            // 1. Lưu combo
+
             PreparedStatement ps = conn.prepareStatement(insertComboSql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, comboCode);
             ps.setString(2, combo.getName());
@@ -123,14 +123,14 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
             ps.setString(5, combo.getStatus() != null ? combo.getStatus().getValue() : "ACTIVE");
             ps.executeUpdate();
 
-            // Lấy combo_id vừa tạo
+
             ResultSet rs = ps.getGeneratedKeys();
             int comboId = 0;
             if (rs.next()) {
                 comboId = rs.getInt(1);
             }
 
-            // 2. Parse và lưu combo_items từ string
+
             if (combo.getComboItems() != null && !combo.getComboItems().isEmpty()) {
                 String[] items = combo.getComboItems().split(",");
                 for (String item : items) {
@@ -140,7 +140,7 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
                         try {
                             int quantity = Integer.parseInt(parts[1].trim());
 
-                            // Tìm item_id từ tên item
+
                             String findItemSql = "SELECT item_id FROM food_item WHERE name = ? AND is_deleted = FALSE";
                             PreparedStatement findPs = conn.prepareStatement(findItemSql);
                             findPs.setString(1, itemName);
@@ -149,7 +149,7 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
                             if (itemRs.next()) {
                                 int itemId = itemRs.getInt("item_id");
 
-                                // Lưu combo_item
+
                                 PreparedStatement itemPs = conn.prepareStatement(insertComboItemSql);
                                 itemPs.setInt(1, comboId);
                                 itemPs.setInt(2, itemId);
@@ -158,17 +158,17 @@ public class ComboDAOImpl extends BaseDAO implements IComboDAO {
                             }
                             findPs.close();
                         } catch (NumberFormatException e) {
-                            // Bỏ qua nếu quantity không phải số
+
                         }
                     }
                 }
             }
 
-            conn.commit(); // Commit transaction
+            conn.commit();
         } catch (SQLException e) {
             try {
                 if (conn != null)
-                    conn.rollback(); // Rollback nếu có lỗi
+                    conn.rollback();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

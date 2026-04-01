@@ -194,22 +194,22 @@ public class VoucherCodeDAOImpl extends BaseDAO implements IVoucherCodeDAO {
         voucher.setDescription(rs.getString("description"));
         voucher.setPromotionId(rs.getInt("promotion_id"));
 
-        // Discount info
+
         String discountTypeStr = rs.getString("discount_type");
         voucher.setDiscountType(
                 discountTypeStr != null ? DiscountType.fromString(discountTypeStr) : DiscountType.FIXED);
         voucher.setDiscountValue(rs.getBigDecimal("discount_value"));
         voucher.setMinOrderValue(rs.getBigDecimal("min_order_value"));
 
-        // Usage tracking
+
         voucher.setMaxUses(rs.getInt("max_uses"));
         voucher.setUsedCount(rs.getInt("used_count"));
 
-        // Status
+
         String statusStr = rs.getString("status");
         voucher.setStatus(statusStr != null ? VoucherStatus.fromString(statusStr) : VoucherStatus.ACTIVE);
 
-        // Timestamps
+
         Timestamp createdTs = rs.getTimestamp("created_at");
         if (createdTs != null) {
             voucher.setCreatedAt(createdTs.toLocalDateTime());

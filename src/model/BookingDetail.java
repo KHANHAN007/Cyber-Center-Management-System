@@ -21,14 +21,14 @@ public class BookingDetail {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // User information
+
     private String userCode;
     private String username;
     private String email;
     private String fullName;
     private String phone;
 
-    // PC information
+
     private String pcCode;
     private String pcName;
     private int zoneId;
@@ -37,7 +37,7 @@ public class BookingDetail {
     private String gpu;
     private double pricePerHour;
 
-    // Slot information
+
     private String slotCode;
     private LocalTime slotTime;
     private LocalDate slotDate;
@@ -45,7 +45,7 @@ public class BookingDetail {
     public BookingDetail() {
     }
 
-    // Getters and Setters
+
     public int getBookingId() {
         return bookingId;
     }

@@ -6,6 +6,7 @@ import enums.PaymentMethod;
 import enums.PaymentStatus;
 import exception.DatabaseException;
 import model.Payment;
+import utils.CodeGenerator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -79,7 +80,8 @@ public class PaymentDAOImpl extends BaseDAO implements IPaymentDAO {
 
     @Override
     public void create(Payment payment) {
-        String paymentCode = "PAY" + System.currentTimeMillis();
+        String paymentCode = CodeGenerator.generateUniqueCode(CodeGenerator.PREFIX_PAYMENT, "payment", "payment_code",
+                getConnection());
         String sql = "INSERT INTO payment (payment_code, booking_id, wallet_id, amount, method, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
         Connection conn = null;

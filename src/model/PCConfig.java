@@ -79,38 +79,38 @@ public class PCConfig {
                 '}';
     }
 }
-//Config 1:
-//
-//Config Code: (tự sinh)
-//CPU: Intel Core i9-13900K
-//RAM: 32
-//GPU: NVIDIA RTX 4090
-//Price per Hour: 150000
-//Config 2:
-//
-//Config Code: (tự sinh)
-//CPU: AMD Ryzen 9 7950X
-//RAM: 64
-//GPU: NVIDIA RTX 4080
-//Price per Hour: 120000
-//Config 3:
-//
-//Config Code: (tự sinh)
-//CPU: Intel Core i7-13700K
-//RAM: 16
-//GPU: NVIDIA RTX 4070
-//Price per Hour: 80000
-//Config 4:
-//
-//Config Code: (tự sinh)
-//CPU: Intel Core i5-13600K
-//RAM: 16
-//GPU: NVIDIA RTX 4060
-//Price per Hour: 50000
-//Config 5:
-//
-//Config Code: (tự sinh)
-//CPU: AMD Ryzen 5 7600X
-//RAM: 8
-//GPU: NVIDIA RTX 3060
-//Price per Hour: 30000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

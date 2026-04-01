@@ -29,15 +29,11 @@ public class FoodManagementHandler {
         public void handleFoodManagement() {
                 while (true) {
                         ConsoleUtils.clearScreen();
-                        String[] logo = {
-                                        "▗▄▄▄▖ ▗▄▖  ▗▄▖ ▗▄▄▄      ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                                        "▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                                        "▐▛▀▀▘▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                                        "▐▌   ▝▚▄▞▘▝▚▄▞▘▐▙▄▄▀     ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                                        ""
-                        };
-                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ＦＯＯＤ ＭＡＮＡＧＥＭＥＮＴ" +
-                        ConsoleUtils.RESET, 135);
+                        ConsoleUtils.printCenter(
+                                        ConsoleUtils.CYAN + "FOOD MANAGEMENT" + ConsoleUtils.RESET,
+                                        ConsoleUtils.DEFAULT_WIDTH);
+                        System.out.println();
+
                         String[] options = {
                                         "1. View menu",
                                         "2. Add food",
@@ -105,20 +101,12 @@ public class FoodManagementHandler {
         private void viewMenu() {
                 try {
                         boolean showDeleted = false;
-
                         while (true) {
                                 ConsoleUtils.clearScreen();
                                 System.out.println();
-                                ConsoleUtils.clearScreen();
-                                String[] logo = {
-                                                "▗▄▄▄▖ ▗▄▖  ▗▄▖ ▗▄▄▄      ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                                                "▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                                                "▐▛▀▀▘▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                                                "▐▌   ▝▚▄▞▘▝▚▄▞▘▐▙▄▄▀     ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                                                ""
-                                };
-
-                                ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 80);
+                                ConsoleUtils.printCenter(
+                                                ConsoleUtils.CYAN + "MENU" + ConsoleUtils.RESET,
+                                                ConsoleUtils.DEFAULT_WIDTH);
                                 String[] filterOptions = {
                                                 "1. Show available items",
                                                 "2. Show all items",
@@ -181,16 +169,7 @@ public class FoodManagementHandler {
                 try {
                         ConsoleUtils.clearScreen();
                         System.out.println();
-                        String[] logo = {
-                                        "▗▄▄▄▖ ▗▄▖  ▗▄▖ ▗▄▄▄      ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                                        "▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                                        "▐▛▀▀▘▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                                        "▐▌   ▝▚▄▞▘▝▚▄▞▘▐▙▄▄▀     ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                                        ""
-                        };
-
-                        ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 33);
-                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ＦＯＯＤ  ＭＥＮＵ" + ConsoleUtils.RESET,
+                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "FOOD MENU" + ConsoleUtils.RESET,
                                         180);
 
                         List<FoodItem> items = foodItemDAO.findAllWithCategoryAndPrices(showDeleted);
@@ -222,7 +201,7 @@ public class FoodManagementHandler {
                 }
 
                 ConsoleUtils.printCenter(
-                                ConsoleUtils.GREEN + "━━━━━━━━━━━━━━━━━━━━━━━ ＦＯＯＤ  ＩＴＥＭＳ ━━━━━━━━━━━━━━━━━━━━━━━"
+                                ConsoleUtils.GREEN + "FOOD ITEMS"
                                                 + ConsoleUtils.RESET,
                                 180);
                 System.out.println();
@@ -276,7 +255,7 @@ public class FoodManagementHandler {
                 }
 
                 ConsoleUtils.printCenter(
-                                ConsoleUtils.ORANGE + "━━━━━━━━━━━━━━━━━━━━━━━ ＳＰＥＣＩＡＬ  ＣＯＭＢＯＳ ━━━━━━━━━━━━━━━━━━━━━━━"
+                                ConsoleUtils.ORANGE + "SPECIAL COMBOS"
                                                 + ConsoleUtils.RESET,
                                 180);
                 System.out.println();
@@ -318,17 +297,7 @@ public class FoodManagementHandler {
                         while (true) {
                                 ConsoleUtils.clearScreen();
                                 System.out.println();
-
-                                String[] logo = {
-                                                "▗▄▄▄▖ ▗▄▖  ▗▄▖ ▗▄▄▄      ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                                                "▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                                                "▐▛▀▀▘▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                                                "▐▌   ▝▚▄▞▘▝▚▄▞▘▐▙▄▄▀     ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                                                ""
-                                };
-
-                                ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 80);
-                                ConsoleUtils.printCenter(ConsoleUtils.GREEN + "ＡＤＤ  ＮＥＷ  ＦＯＯＤ" + ConsoleUtils.RESET,
+                                ConsoleUtils.printCenter(ConsoleUtils.GREEN + "ADD NEW FOOD" + ConsoleUtils.RESET,
                                                 136);
                                 System.out.println();
 
@@ -392,17 +361,8 @@ public class FoodManagementHandler {
         private void addNewFoodItem() {
                 try {
                         ConsoleUtils.clearScreen();
-                        String[] logo = {
-                                        "▗▄▄▄▖ ▗▄▖  ▗▄▖ ▗▄▄▄      ▗▖  ▗▖ ▗▄▖ ▗▖  ▗▖ ▗▄▖  ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖",
-                                        "▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▛▚▞▜▌▐▌ ▐▌▐▛▚▖▐▌▐▌ ▐▌▐▌   ▐▌   ▐▛▚▞▜▌▐▌   ▐▛▚▖▐▌  █",
-                                        "▐▛▀▀▘▐▌ ▐▌▐▌ ▐▌▐▌  █     ▐▌  ▐▌▐▛▀▜▌▐▌ ▝▜▌▐▛▀▜▌▐▌▝▜▌▐▛▀▀▘▐▌  ▐▌▐▛▀▀▘▐▌ ▝▜▌  █",
-                                        "▐▌   ▝▚▄▞▘▝▚▄▞▘▐▙▄▄▀     ▐▌  ▐▌▐▌ ▐▌▐▌  ▐▌▐▌ ▐▌▝▚▄▞▘▐▙▄▄▖▐▌  ▐▌▐▙▄▄▖▐▌  ▐▌  █",
-                                        ""
-                        };
-
-                        ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 80);
                         ConsoleUtils.printCenter(
-                                        ConsoleUtils.GREEN + "━━━━━━━━━━━ ＡＤＤ  ＦＯＯＤ  ＩＴＥＭ ━━━━━━━━━━━"
+                                        ConsoleUtils.GREEN + "ADD FOOD ITEM"
                                                         + ConsoleUtils.RESET,
                                         ConsoleUtils.DEFAULT_WIDTH);
                         System.out.println();
@@ -414,18 +374,18 @@ public class FoodManagementHandler {
                                 foodName = sc.nextLine().trim();
                                 if (foodName.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Food name cannot be empty!"
+                                                        ConsoleUtils.RED + "Food name cannot be empty!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                 } else if (foodName.length() < 2) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Food name must be at least 2 characters!"
+                                                        ConsoleUtils.RED + "Food name must be at least 2 characters!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         foodName = "";
                                 } else if (foodName.length() > 100) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Food name cannot exceed 100 characters!"
+                                                        ConsoleUtils.RED + "Food name cannot exceed 100 characters!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         foodName = "";
@@ -443,7 +403,7 @@ public class FoodManagementHandler {
                                 String minPriceInput = sc.nextLine().trim();
                                 if (minPriceInput.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Price cannot be empty!"
+                                                        ConsoleUtils.RED + "Price cannot be empty!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                 } else {
@@ -451,14 +411,14 @@ public class FoodManagementHandler {
                                                 minPrice = Double.parseDouble(minPriceInput);
                                                 if (minPrice <= 1000) {
                                                         ConsoleUtils.printCenter(
-                                                                        ConsoleUtils.RED + "✗ Price must be greater than 1000!"
+                                                                        ConsoleUtils.RED + "Price must be greater than 1000!"
                                                                                         + ConsoleUtils.RESET,
                                                                         ConsoleUtils.DEFAULT_WIDTH);
                                                         minPrice = -1;
                                                 }
                                         } catch (NumberFormatException e) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Invalid price format! Please enter a number."
+                                                                ConsoleUtils.RED + "Invalid price format! Please enter a number."
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                         }
@@ -472,7 +432,7 @@ public class FoodManagementHandler {
                                 String maxPriceInput = sc.nextLine().trim();
                                 if (maxPriceInput.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Price cannot be empty!"
+                                                        ConsoleUtils.RED + "Price cannot be empty!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                 } else {
@@ -480,13 +440,13 @@ public class FoodManagementHandler {
                                                 maxPrice = Double.parseDouble(maxPriceInput);
                                                 if (maxPrice <= 1000) {
                                                         ConsoleUtils.printCenter(
-                                                                        ConsoleUtils.RED + "✗ Price must be greater than 1000!"
+                                                                        ConsoleUtils.RED + "Price must be greater than 1000!"
                                                                                         + ConsoleUtils.RESET,
                                                                         ConsoleUtils.DEFAULT_WIDTH);
                                                         maxPrice = -1;
                                                 } else if (maxPrice < minPrice) {
                                                         ConsoleUtils.printCenter(
-                                                                        ConsoleUtils.RED + "✗ Max price cannot be less than min price (₫"
+                                                                        ConsoleUtils.RED + "Max price cannot be less than min price (₫"
                                                                                         + String.format("%.0f",
                                                                                                         minPrice)
                                                                                         + ")!" + ConsoleUtils.RESET,
@@ -495,7 +455,7 @@ public class FoodManagementHandler {
                                                 }
                                         } catch (NumberFormatException e) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Invalid price format! Please enter a number."
+                                                                ConsoleUtils.RED + "Invalid price format! Please enter a number."
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                         }
@@ -516,7 +476,7 @@ public class FoodManagementHandler {
                                 String categoryInput = sc.nextLine().trim();
                                 if (categoryInput.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Category ID cannot be empty!"
+                                                        ConsoleUtils.RED + "Category ID cannot be empty!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                 } else {
@@ -524,22 +484,21 @@ public class FoodManagementHandler {
                                                 categoryId = Integer.parseInt(categoryInput);
                                                 if (categoryId < 1 || categoryId > 4) {
                                                         ConsoleUtils.printCenter(
-                                                                        ConsoleUtils.RED + "✗ Category ID must be between 1 and 4!"
+                                                                        ConsoleUtils.RED + "Category ID must be between 1 and 4!"
                                                                                         + ConsoleUtils.RESET,
                                                                         ConsoleUtils.DEFAULT_WIDTH);
                                                 }
                                         } catch (NumberFormatException e) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Invalid input! Please enter a number (1-4)."
+                                                                ConsoleUtils.RED + "Invalid input! Please enter a number (1-4)."
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                         }
                                 }
                         }
 
-                        // Input sizes with validation
                         System.out.println();
-                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━ ADD AVAILABLE SIZES ━━" + ConsoleUtils.RESET,
+                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ADD AVAILABLE SIZES" + ConsoleUtils.RESET,
                                         ConsoleUtils.DEFAULT_WIDTH);
                         ConsoleUtils.printCenter(
                                         ConsoleUtils.YELLOW
@@ -565,7 +524,7 @@ public class FoodManagementHandler {
 
                                 if (sizeInput.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Size không được để trống!"
+                                                        ConsoleUtils.RED + "Size không được để trống!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         continue;
@@ -574,7 +533,7 @@ public class FoodManagementHandler {
                                 String convertedSize = convertAndValidateSize(sizeInput);
                                 if (convertedSize == null) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Size không hợp lệ! Chỉ nhận: s, m, l, xl, 2xl, 3xl..."
+                                                        ConsoleUtils.RED + " Size không hợp lệ! Chỉ nhận: s, m, l, xl, 2xl, 3xl..."
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         continue;
@@ -596,10 +555,9 @@ public class FoodManagementHandler {
 
                         String sizes = validSizesList.isEmpty() ? "Standard" : String.join(", ", validSizesList);
 
-                        // Input toppings with validation (one per line, check if exists)
                         System.out.println();
                         ConsoleUtils.printCenter(
-                                        ConsoleUtils.CYAN + "━━ ADD AVAILABLE TOPPINGS ━━" + ConsoleUtils.RESET,
+                                        ConsoleUtils.CYAN + "ADD AVAILABLE TOPPINGS" + ConsoleUtils.RESET,
                                         ConsoleUtils.DEFAULT_WIDTH);
                         ConsoleUtils.printCenter(
                                         ConsoleUtils.YELLOW + "(Optional - Nhập từng topping một dòng)"
@@ -622,7 +580,7 @@ public class FoodManagementHandler {
 
                                 if (toppingInput.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Topping không được để trống!"
+                                                        ConsoleUtils.RED + "Topping không được để trống!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         continue;
@@ -661,7 +619,7 @@ public class FoodManagementHandler {
                                 foodItemDAO.create(foodItem);
                                 System.out.println();
                                 ConsoleUtils.printCenter(
-                                                ConsoleUtils.GREEN + "✓ Food item added successfully!"
+                                                ConsoleUtils.GREEN + "Food item added successfully!"
                                                                 + ConsoleUtils.RESET,
                                                 ConsoleUtils.DEFAULT_WIDTH);
                                 System.out.println(centerText("  Code: " + foodItem.getItemCode(),
@@ -775,18 +733,18 @@ public class FoodManagementHandler {
                                 comboName = sc.nextLine().trim();
                                 if (comboName.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Combo name cannot be empty!"
+                                                        ConsoleUtils.RED + "Combo name cannot be empty!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                 } else if (comboName.length() < 2) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Combo name must be at least 2 characters!"
+                                                        ConsoleUtils.RED + "Combo name must be at least 2 characters!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         comboName = "";
                                 } else if (comboName.length() > 100) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Combo name cannot exceed 100 characters!"
+                                                        ConsoleUtils.RED + "Combo name cannot exceed 100 characters!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         comboName = "";
@@ -801,7 +759,7 @@ public class FoodManagementHandler {
                                 String priceInput = sc.nextLine().trim();
                                 if (priceInput.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Price cannot be empty!"
+                                                        ConsoleUtils.RED + "Price cannot be empty!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         System.out.print(centerText(
@@ -812,7 +770,7 @@ public class FoodManagementHandler {
                                                 price = Double.parseDouble(priceInput);
                                                 if (price < 0) {
                                                         ConsoleUtils.printCenter(
-                                                                        ConsoleUtils.RED + "✗ Price cannot be negative! Please try again."
+                                                                        ConsoleUtils.RED + "Price cannot be negative! Please try again."
                                                                                         + ConsoleUtils.RESET,
                                                                         ConsoleUtils.DEFAULT_WIDTH);
                                                         System.out.print(centerText(
@@ -821,7 +779,7 @@ public class FoodManagementHandler {
                                                                         ConsoleUtils.DEFAULT_WIDTH));
                                                 } else if (price < 5000) {
                                                         ConsoleUtils.printCenter(
-                                                                        ConsoleUtils.RED + "✗ Price should be at least 5000! Please try again."
+                                                                        ConsoleUtils.RED + "Price should be at least 5000! Please try again."
                                                                                         + ConsoleUtils.RESET,
                                                                         ConsoleUtils.DEFAULT_WIDTH);
                                                         System.out.print(centerText(
@@ -833,7 +791,7 @@ public class FoodManagementHandler {
                                                 }
                                         } catch (NumberFormatException e) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Invalid price format! Please enter a valid number."
+                                                                ConsoleUtils.RED + "Invalid price format! Please enter a valid number."
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                                 System.out.print(centerText(
@@ -845,11 +803,10 @@ public class FoodManagementHandler {
                         }
 
                         System.out.println();
-                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "━━ ADD COMBO ITEMS ━━" + ConsoleUtils.RESET,
+                        ConsoleUtils.printCenter(ConsoleUtils.CYAN + "ADD COMBO ITEMS" + ConsoleUtils.RESET,
                                         ConsoleUtils.DEFAULT_WIDTH);
-                        ConsoleUtils.printCenter(
-                                        ConsoleUtils.YELLOW + "(Nhập từng item một dòng, format: ItemName x quantity)"
-                                                        + ConsoleUtils.RESET,
+                        ConsoleUtils.printCenter(ConsoleUtils.YELLOW
+                                        + "(Nhập từng item một dòng, format: ItemName x quantity)" + ConsoleUtils.RESET,
                                         ConsoleUtils.DEFAULT_WIDTH);
                         ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "(Nhấn 0 để thoát nhập)" + ConsoleUtils.RESET,
                                         ConsoleUtils.DEFAULT_WIDTH);
@@ -870,7 +827,7 @@ public class FoodManagementHandler {
 
                                 if (itemInput.isEmpty()) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Item không được để trống!"
+                                                        ConsoleUtils.RED + "Item không được để trống!"
                                                                         + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         continue;
@@ -888,21 +845,19 @@ public class FoodManagementHandler {
                                 String itemName = parts[0].trim();
                                 String quantityStr = parts[1].trim();
 
-                                // Kiểm tra quantity
                                 int quantity;
                                 try {
                                         quantity = Integer.parseInt(quantityStr);
                                         if (quantity <= 0) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Số lượng phải > 0!"
+                                                                ConsoleUtils.RED + "Số lượng phải > 0!"
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                                 continue;
                                         }
                                 } catch (NumberFormatException e) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Số lượng phải là số!"
-                                                                        + ConsoleUtils.RESET,
+                                                        ConsoleUtils.RED + "Số lượng phải là số!" + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         continue;
                                 }
@@ -946,7 +901,7 @@ public class FoodManagementHandler {
 
                         if (parsedItems.isEmpty()) {
                                 ConsoleUtils.printCenter(
-                                                ConsoleUtils.RED + "✗ Combo phải có ít nhất 1 item!"
+                                                ConsoleUtils.RED + "Combo must have at least 1 item!"
                                                                 + ConsoleUtils.RESET,
                                                 ConsoleUtils.DEFAULT_WIDTH);
                                 System.out.print(centerText(
@@ -985,7 +940,7 @@ public class FoodManagementHandler {
                                 }
                         } catch (Exception saveError) {
                                 ConsoleUtils.printCenter(
-                                                ConsoleUtils.RED + "✗ Failed to save combo: " + saveError.getMessage()
+                                                ConsoleUtils.RED + "Failed to save combo: " + saveError.getMessage()
                                                                 + ConsoleUtils.RESET,
                                                 ConsoleUtils.DEFAULT_WIDTH);
                         }
@@ -1017,7 +972,9 @@ public class FoodManagementHandler {
                                 };
 
                                 ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 80);
-                                ConsoleUtils.printCenter(ConsoleUtils.YELLOW + "ＵＰＤＡＴＥ  ＦＯＯＤ" + ConsoleUtils.RESET,
+                                ConsoleUtils.printCenter(
+                                                ConsoleUtils.CYAN + "━━━━━━━━━━━ ＵＰＤＡＴＥ  ＦＯＯＤ ━━━━━━━━━━━"
+                                                                + ConsoleUtils.RESET,
                                                 136);
                                 System.out.println();
 
@@ -1089,7 +1046,7 @@ public class FoodManagementHandler {
                                         ""
                         };
                         ConsoleUtils.printCenter(
-                                        ConsoleUtils.GREEN + "━━━━━━━━━━━ ＵＰＤＡＴＥ  ＦＯＯＤ  ＩＴＥＭ ━━━━━━━━━━━"
+                                        ConsoleUtils.CYAN + "━━━━━━━━━━━ ＵＰＤＡＴＥ  ＦＯＯＤ  ＩＴＥＭ ━━━━━━━━━━━"
                                                         + ConsoleUtils.RESET,
                                         ConsoleUtils.DEFAULT_WIDTH);
                         ConsoleUtils.printLogoCentered(logo, ConsoleUtils.DEFAULT_WIDTH, 80);
@@ -1138,7 +1095,7 @@ public class FoodManagementHandler {
 
                                         if (selectedItem == null) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Food item with ID " + itemId
+                                                                ConsoleUtils.RED + "Food item with ID " + itemId
                                                                                 + " not found!"
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
@@ -1159,13 +1116,12 @@ public class FoodManagementHandler {
                         while (true) {
                                 ConsoleUtils.clearScreen();
                                 ConsoleUtils.printCenter(
-                                                ConsoleUtils.GREEN + "━━━━━━━━━━━ ＵＰＤＡＴＥ: " + selectedItem.getName()
+                                                ConsoleUtils.CYAN + "━━━━━━━━━━━ ＵＰＤＡＴＥ: " + selectedItem.getName()
                                                                 + " ━━━━━━━━━━━"
                                                                 + ConsoleUtils.RESET,
                                                 ConsoleUtils.DEFAULT_WIDTH);
                                 System.out.println();
 
-                                // Display current information in table format
                                 ConsoleUtils.printCenter(
                                                 ConsoleUtils.CYAN + "━━━━━━━━━━━ CURRENT INFORMATION ━━━━━━━━━━━"
                                                                 + ConsoleUtils.RESET,
@@ -1249,7 +1205,6 @@ public class FoodManagementHandler {
                                                         updateFoodOtherFields(selectedItem);
                                                         break;
                                                 case 3:
-                                                        // Save and back
                                                         try {
                                                                 foodItemDAO.update(selectedItem);
                                                                 ConsoleUtils.printCenter(
@@ -1291,7 +1246,7 @@ public class FoodManagementHandler {
                                         }
                                 } catch (NumberFormatException e) {
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.RED + "✗ Invalid input! Please enter a number.",
+                                                        ConsoleUtils.RED + "Invalid input! Please enter a number.",
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                         System.out.print(centerText(
                                                         ConsoleUtils.YELLOW + "Press Enter to continue..."
@@ -1308,13 +1263,12 @@ public class FoodManagementHandler {
 
         private void updateFoodOtherFields(FoodItem item) {
                 try {
-                        // Update name
                         System.out.println();
                         String newName = InputValidator.getValidatedInput(sc,
                                         centerText(ConsoleUtils.CYAN + "Food Item Name [" + item.getName()
                                                         + "] (Enter to skip): "
                                                         + ConsoleUtils.RESET, ConsoleUtils.DEFAULT_WIDTH),
-                                        "", // skip option (empty string)
+                                        "",
                                         input -> input.length() >= 2 && input.length() <= 100,
                                         ConsoleUtils.RED + "✗ Name must be 2-100 characters!" + ConsoleUtils.RESET);
                         if (newName != null) {
@@ -1323,7 +1277,6 @@ public class FoodManagementHandler {
                                                 ConsoleUtils.DEFAULT_WIDTH);
                         }
 
-                        // Update min price
                         System.out.println();
                         Double minPrice = InputValidator.getValidatedDouble(sc,
                                         centerText(ConsoleUtils.CYAN + "Min Price [₫"
@@ -1337,16 +1290,15 @@ public class FoodManagementHandler {
                                                         return false;
                                                 }
                                         },
-                                        ConsoleUtils.RED + "✗ Price must be greater than 1000!" + ConsoleUtils.RESET,
+                                        ConsoleUtils.RED + "Price must be greater than 1000!" + ConsoleUtils.RESET,
                                         true);
                         if (minPrice != null) {
                                 item.setMinPrice(minPrice);
                                 ConsoleUtils.printCenter(
-                                                ConsoleUtils.GREEN + "✓ Min price updated!" + ConsoleUtils.RESET,
+                                                ConsoleUtils.GREEN + "Min price updated!" + ConsoleUtils.RESET,
                                                 ConsoleUtils.DEFAULT_WIDTH);
                         }
 
-                        // Update max price
                         System.out.println();
                         Double maxPrice = InputValidator.getValidatedDouble(sc,
                                         centerText(ConsoleUtils.CYAN + "Max Price [₫"
@@ -1371,7 +1323,6 @@ public class FoodManagementHandler {
                                                 ConsoleUtils.DEFAULT_WIDTH);
                         }
 
-                        // Update category
                         System.out.println();
                         ConsoleUtils.printCenter(
                                         ConsoleUtils.CYAN + "Category: 1=Pizza, 2=Burger, 3=Drink, 4=Dessert"
@@ -1398,7 +1349,6 @@ public class FoodManagementHandler {
                                                 ConsoleUtils.DEFAULT_WIDTH);
                         }
 
-                        // Update sizes
                         System.out.println();
                         String updateSizesResponse = InputValidator.getYesNoInput(sc,
                                         centerText(ConsoleUtils.CYAN + "Update Sizes? (y/n - Enter to skip): "
@@ -1448,7 +1398,7 @@ public class FoodManagementHandler {
                                         String convertedSize = convertAndValidateSize(sizeInput);
                                         if (convertedSize == null) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Invalid size! Only: s, m, l, xl, 2xl, 3xl"
+                                                                ConsoleUtils.RED + "Invalid size! Only: s, m, l, xl, 2xl, 3xl"
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                                 continue;
@@ -1457,23 +1407,22 @@ public class FoodManagementHandler {
                                         if (!validSizesList.contains(convertedSize)) {
                                                 validSizesList.add(convertedSize);
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.GREEN + "✓ Added: " + convertedSize
+                                                                ConsoleUtils.GREEN + "Added: " + convertedSize
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                         } else {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.YELLOW + "⚠ Already added!"
+                                                                ConsoleUtils.YELLOW + "Already added!"
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                         }
                                 }
 
                                 item.setAvailableSizes(String.join(", ", validSizesList));
-                                ConsoleUtils.printCenter(ConsoleUtils.GREEN + "✓ Sizes updated!" + ConsoleUtils.RESET,
+                                ConsoleUtils.printCenter(ConsoleUtils.GREEN + "Sizes updated!" + ConsoleUtils.RESET,
                                                 ConsoleUtils.DEFAULT_WIDTH);
                         }
 
-                        // Update toppings
                         System.out.println();
                         String updateToppingsResponse = InputValidator.getYesNoInput(sc,
                                         centerText(ConsoleUtils.CYAN + "Update Toppings? (y/n - Enter to skip): "
@@ -1510,7 +1459,7 @@ public class FoodManagementHandler {
 
                                         if (toppingInput.isEmpty()) {
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.RED + "✗ Topping cannot be empty!"
+                                                                ConsoleUtils.RED + "Topping cannot be empty!"
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                                 continue;
@@ -1520,7 +1469,7 @@ public class FoodManagementHandler {
                                         if (!validToppingsList.contains(capitalizedTopping)) {
                                                 validToppingsList.add(capitalizedTopping);
                                                 ConsoleUtils.printCenter(
-                                                                ConsoleUtils.GREEN + "✓ Added: " + capitalizedTopping
+                                                                ConsoleUtils.GREEN + "Added: " + capitalizedTopping
                                                                                 + ConsoleUtils.RESET,
                                                                 ConsoleUtils.DEFAULT_WIDTH);
                                         } else {
@@ -1534,7 +1483,7 @@ public class FoodManagementHandler {
                                 if (!validToppingsList.isEmpty()) {
                                         item.setAvailableToppings(String.join(", ", validToppingsList));
                                         ConsoleUtils.printCenter(
-                                                        ConsoleUtils.GREEN + "✓ Toppings updated!" + ConsoleUtils.RESET,
+                                                        ConsoleUtils.GREEN + "Toppings updated!" + ConsoleUtils.RESET,
                                                         ConsoleUtils.DEFAULT_WIDTH);
                                 }
                         }
@@ -1761,7 +1710,6 @@ public class FoodManagementHandler {
                                 }
                         }
 
-                        // Show update menu
                         while (true) {
                                 ConsoleUtils.clearScreen();
                                 ConsoleUtils.printCenter(
@@ -1770,8 +1718,6 @@ public class FoodManagementHandler {
                                                                 + ConsoleUtils.RESET,
                                                 ConsoleUtils.DEFAULT_WIDTH);
                                 System.out.println();
-
-                                // Display current information in table format
                                 ConsoleUtils.printCenter(
                                                 ConsoleUtils.CYAN + "━━━━━━━━━━━ CURRENT INFORMATION ━━━━━━━━━━━"
                                                                 + ConsoleUtils.RESET,
@@ -1857,7 +1803,6 @@ public class FoodManagementHandler {
                                                         updateComboItems(selectedCombo);
                                                         break;
                                                 case 5:
-                                                        // Save and back
                                                         try {
                                                                 comboDAO.update(selectedCombo);
                                                                 ConsoleUtils.printCenter(
@@ -2049,7 +1994,7 @@ public class FoodManagementHandler {
                                         centerText(ConsoleUtils.CYAN + "Combo Name [" + combo.getName()
                                                         + "] (Enter to skip): "
                                                         + ConsoleUtils.RESET, ConsoleUtils.DEFAULT_WIDTH),
-                                        "", // skip option (empty string)
+                                        "",
                                         input -> input.length() >= 2 && input.length() <= 100,
                                         ConsoleUtils.RED + "✗ Name must be 2-100 characters!" + ConsoleUtils.RESET);
                         if (newName != null) {
@@ -2138,7 +2083,6 @@ public class FoodManagementHandler {
                                         continue;
                                 }
 
-                                // Parse format: ItemName x quantity
                                 String[] parts = itemInput.split("x");
                                 if (parts.length != 2) {
                                         ConsoleUtils.printCenter(
@@ -2151,7 +2095,6 @@ public class FoodManagementHandler {
                                 String itemName = parts[0].trim();
                                 String quantityStr = parts[1].trim();
 
-                                // Kiểm tra quantity
                                 int quantity;
                                 try {
                                         quantity = Integer.parseInt(quantityStr);
@@ -2194,8 +2137,6 @@ public class FoodManagementHandler {
                                         }
                                         continue;
                                 }
-
-                                // Thêm item vào map
                                 parsedItems.put(itemName, quantity);
                                 if (itemsBuilder.length() > 0) {
                                         itemsBuilder.append(", ");

@@ -91,7 +91,7 @@ public class UserDAOImpl extends BaseDAO implements IUserDAO {
 
             while (rs.next()) {
                 User user = mapResultSetToUser(rs);
-                // Set role information from stored procedure result
+
                 model.Role role = new model.Role();
                 role.setRoleName(rs.getString("role_name"));
                 user.setRole(role);

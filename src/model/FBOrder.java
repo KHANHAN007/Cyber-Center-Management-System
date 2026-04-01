@@ -7,16 +7,18 @@ import java.time.LocalDateTime;
 public class FBOrder {
     private int orderId;
     private String orderCode;
-    private int bookingId;
+    private Integer bookingId;
     private double totalPrice;
     private OrderStatus status;
+    private String paymentStatus;
+    private String paymentMethod;
     private LocalDateTime createdAt;
 
     public FBOrder() {
     }
 
     public FBOrder(int bookingId, OrderStatus status) {
-        this.bookingId = bookingId;
+        this.bookingId = bookingId > 0 ? bookingId : null;
         this.status = status;
     }
 
@@ -36,11 +38,11 @@ public class FBOrder {
         this.orderCode = orderCode;
     }
 
-    public int getBookingId() {
+    public Integer getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(int bookingId) {
+    public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
     }
 
@@ -60,6 +62,22 @@ public class FBOrder {
         this.status = status;
     }
 
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -76,6 +94,8 @@ public class FBOrder {
                 ", bookingId=" + bookingId +
                 ", totalPrice=" + totalPrice +
                 ", status='" + status + '\'' +
+                ", paymentStatus='" + paymentStatus + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
                 '}';
     }
 }

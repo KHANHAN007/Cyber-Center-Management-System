@@ -20,11 +20,13 @@ public class BookingServiceImpl implements IBookingService {
     private IPCConfigDAO configDAO;
     private IZoneDAO zoneDAO;
 
-    public BookingServiceImpl(IBookingDAO bookingDAO, IPCDAO pcDAO, IZoneDAO zoneDAO, ICheckInOutDAO checkInOutDAO) {
+    public BookingServiceImpl(IBookingDAO bookingDAO, IPCDAO pcDAO, IZoneDAO zoneDAO, ICheckInOutDAO checkInOutDAO,
+            IPCConfigDAO configDAO) {
         this.bookingDAO = bookingDAO;
         this.checkInOutDAO = checkInOutDAO;
         this.pcDAO = pcDAO;
         this.zoneDAO = zoneDAO;
+        this.configDAO = configDAO;
     }
 
     @Override
@@ -44,8 +46,9 @@ public class BookingServiceImpl implements IBookingService {
                 throw new NotFoundException("PC does not exist");
             }
 
-            if (!bookingDAO.isPCAvailable(pcId, startTime, endTime)) {
-                throw new BusinessException("PC is not available for the selected time range");
+
+            if (pc.getStatus() != null && pc.getStatus() != PCStatus.AVAILABLE) {
+                throw new BusinessException("PC is not available for booking (current status: " + pc.getStatus() + ")");
             }
 
             Booking booking = new Booking(userId, pcId, startTime, endTime);
@@ -54,13 +57,53 @@ public class BookingServiceImpl implements IBookingService {
             booking.setStatus(BookingStatus.PENDING);
 
             bookingDAO.create(booking);
-            Booking createdBooking = bookingDAO.findById(booking.getBookingId());
 
-            return createdBooking;
+            return booking;
         } catch (BusinessException e) {
             throw e;
         } catch (Exception e) {
             throw new BusinessException("Error creating booking: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Booking scheduleBooking(int userId, int pcId, LocalDateTime scheduledStartTime,
+            LocalDateTime scheduledEndTime)
+            throws BusinessException {
+        try {
+            if (scheduledStartTime == null || scheduledEndTime == null) {
+                throw new InvalidDataException("Scheduled start and end time cannot be empty");
+            }
+
+            if (scheduledEndTime.isBefore(scheduledStartTime)) {
+                throw new InvalidDataException("Scheduled end time must be after start time");
+            }
+
+            if (scheduledStartTime.isBefore(LocalDateTime.now())) {
+                throw new InvalidDataException("Scheduled start time must be in the future");
+            }
+
+            PC pc = pcDAO.findById(pcId);
+            if (pc == null) {
+                throw new NotFoundException("PC does not exist");
+            }
+
+            if (!bookingDAO.isPCAvailable(pcId, scheduledStartTime, scheduledEndTime)) {
+                throw new BusinessException("PC is not available for the selected time range");
+            }
+
+            Booking booking = new Booking(userId, pcId, scheduledStartTime, scheduledEndTime);
+            double totalPrice = calculateBookingPrice(pc, scheduledStartTime, scheduledEndTime);
+            booking.setTotalPrice(totalPrice);
+            booking.setStatus(BookingStatus.PENDING);
+
+            bookingDAO.create(booking);
+
+            return booking;
+        } catch (BusinessException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BusinessException("Error scheduling booking: " + e.getMessage(), e);
         }
     }
 
@@ -183,6 +226,28 @@ public class BookingServiceImpl implements IBookingService {
 
             if (booking.getStatus() != BookingStatus.IN_PROGRESS) {
                 throw new BusinessException("Booking must be in progress to check-out");
+            }
+
+
+            CheckInOut checkInOut = checkInOutDAO.getCheckInOutByBookingId(bookingId);
+            if (checkInOut != null && checkInOut.getCheckInTime() != null) {
+                LocalDateTime actualCheckOutTime = LocalDateTime.now();
+
+
+                PC pc = pcDAO.findById(booking.getPcId());
+                if (pc != null) {
+                    double actualPrice = calculateBookingPrice(pc, checkInOut.getCheckInTime(), actualCheckOutTime);
+                    double originalPrice = booking.getTotalPrice();
+
+
+                    booking.setTotalPrice(actualPrice);
+
+
+                    if (actualPrice != originalPrice) {
+                        System.out.println("Price adjusted - Original: " + originalPrice + " VND, Actual: "
+                                + actualPrice + " VND");
+                    }
+                }
             }
 
             checkInOutDAO.updateCheckOut(bookingId);
